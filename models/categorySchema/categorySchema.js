@@ -9,21 +9,6 @@ const cateSchema=new mongoose.Schema({
         type:String,
         require:true
     },
-    subCategory:{
-        type:String,
-        require:true
-    },
-    subSubCategory:{
-        type:String,
-        require:true
-    },
-    attributes:{
-        type:String,
-        require:true
-    },values:{
-        type:String,
-        require:true
-    },
     shipmentService:{
         type:Boolean,
         default:true
@@ -32,12 +17,6 @@ const cateSchema=new mongoose.Schema({
         type:Boolean,
         default:true
     },
-    user_ID:{
-        type:mongoose.Schema.Types.ObjectId,
-        require:true,
-        ref:"user"
-    }
-
 })
 cateSchema.set("timestamps",true)
 module.exports=mongoose.model("category",cateSchema)

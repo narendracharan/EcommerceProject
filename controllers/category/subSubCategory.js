@@ -1,12 +1,20 @@
-const cateSchema = require("../../models/categorySchema");
+const cateSchema = require("../../models/categorySchema/subSubCategorySchema");
+const category = require("../../models/categorySchema/categorySchema");
+const subCategory = require("../../models/categorySchema/subCategorySchema");
 
 const subSubCategory = async (req, res) => {
   const subSubCategory = new cateSchema(req.body);
   try {
+    const cate = await category.find();
+    const cateData = cate.map((p) => p.categoryName);
+    const subcategory = await subCategory.find();
+    const subcategoryData = subcategory.map((p) => p.subCategoryName);
     await subSubCategory.save();
     res.status(200).json({
       status: "Success",
       message: "subSubCategory Created",
+      cateData,
+      subcategoryData,
     });
   } catch (err) {
     res.status(500).json({

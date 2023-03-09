@@ -1,4 +1,4 @@
-const cateSchema = require("../../models/categorySchema");
+const cateSchema = require("../../models/categorySchema/categorySchema");
 
 const createCategory = async (req, res) => {
   const category = new cateSchema(req.body);

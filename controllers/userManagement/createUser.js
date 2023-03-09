@@ -1,4 +1,4 @@
-const userSchema = require("../../models/userManSchema");
+const userSchema = require("../../models/userSchema");
 
 const createUser = async (req, res) => {
   const User = new userSchema(req.body);
@@ -53,79 +53,6 @@ const userSearch = async (req, res) => {
   }
 };
 
-const userFollower = async (req, res) => {
-  const { id, follower } = req.params;
-  try {
-    const userFollower = await userSchema.findById(id).select("follower");
-    if (follower == "true") {
-      let follower = userFollower.follower;
-      follower++;
-      const updateFollower = await userSchema.findOneAndUpdate(
-        userFollower.id,
-        { $set: { follower: follower } },
-        { new: true }
-      );
-      res.status(200).json({
-        status: "Success",
-        message: "Follower update Successfully",
-      });
-    } else {
-      let follower = userFollower.follower;
-      follower--;
-      const updateFollower = await userSchema.findByIdAndUpdate(
-        userFollower.id,
-        { $set: { follower: follower } },
-        { new: true }
-      );
-      res.status(200).json({
-        status: "Success",
-        message: "userUnfollow SuccessFully",
-      });
-    }
-  } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-    });
-  }
-};
-
-const userFollowing = async (req, res) => {
-  const { id, following } = req.params;
-  try {
-    const userFollowing = await userSchema.findById(id).select("following");
-    if (following == "true") {
-      let following = userFollowing.following;
-      following++;
-      const updateFollowing = await userSchema.findOneAndUpdate(
-        userFollowing.id,
-        { $set: { following: following } },
-        { new: true }
-      );
-      res.status(200).json({
-        status: "Success",
-        message: "Following update Successfully",
-      });
-    } else {
-      let following = userFollower.following;
-      following--;
-      const updateFollowing = await userSchema.findByIdAndUpdate(
-        userFollowing.id,
-        { $set: { following: following } },
-        { new: true }
-      );
-      res.status(200).json({
-        status: "Success",
-        message: "userUnfollowing SuccessFully",
-      });
-    }
-  } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-    });
-  }
-};
 
 const userDetails = async (req, res) => {
   const id = req.params.id;
@@ -133,11 +60,9 @@ const userDetails = async (req, res) => {
     const list = await userSchema.findById(id, {
       _id: 0,
       userName: 1,
-      mobiileNumber: 1,
+      mobileNumber: 1,
       dateOfBirth: 1,
       createdAt: 1,
-      follower: 1,
-      following: 1,
     });
     res.status(200).json({
       status: "Success",
@@ -156,7 +81,5 @@ module.exports = {
   createUser,
   userList,
   userSearch,
-  userFollower,
-  userFollowing,
   userDetails,
 };
