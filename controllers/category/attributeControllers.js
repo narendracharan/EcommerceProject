@@ -2,23 +2,63 @@ const cateSchema = require("../../models/categorySchema/attributeSchema");
 const category = require("../../models/categorySchema/categorySchema");
 const subCategory = require("../../models/categorySchema/subCategorySchema");
 const subSubCategory = require("../../models/categorySchema/subSubCategorySchema");
+const values = require("../../models/categorySchema/valuesSchema");
 
 const createAttribute = async (req, res) => {
   const attribute = new cateSchema(req.body);
   try {
-    const cate = await category.find();
-    const subCate = await subCategory.find();
-    const subSubCate = await subSubCategory.find();
-    const cateData = cate.map((p) => p.categoryName);
-    const subCateData = subCate.map((p) => p.subCategoryName);
-    const subSubCateData = subSubCate.map((p) => p.subSubCategoryName);
     await attribute.save();
     res.status(201).json({
       status: "Success",
       message: "Attribute Created",
-      cateData,
-      subCateData,
-      subSubCateData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+const selectCategory = async (req, res) => {
+  const cate = await category.find();
+  try {
+    const cateData = cate.map((p) => p.categoryName);
+    res.status(200).json({
+      status: "Success",
+      cateList: cateData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+const selectSubCategory = async (req, res) => {
+  const subCate = await subCategory.find();
+  try {
+    const subCateData = subCate.map((p) => p.subCategoryName);
+    res.status(200).json({
+      status: "Success",
+      subCateList: subCateData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+const selectSubSubCategory = async (req, res) => {
+  const subSubCate = await subSubCategory.find();
+  try {
+    const subSubCateData = subSubCate.map((p) => p.subSubCategoryName);
+    res.status(200).json({
+      sttaus: "Success",
+      subSubCateList: subSubCateData,
     });
   } catch (err) {
     res.status(500).json({
@@ -87,9 +127,29 @@ const attributeSearch = async (req, res) => {
     });
   }
 };
+
+const checkValues = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const checkData = await values.find({ attribute_Id: id });
+    res.status(200).json({
+      status: "Success",
+      allValues: checkData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
 module.exports = {
   createAttribute,
   attributeList,
   attributeUpdate,
   attributeSearch,
+  selectCategory,
+  selectSubCategory,
+  selectSubSubCategory,
+  checkValues,
 };

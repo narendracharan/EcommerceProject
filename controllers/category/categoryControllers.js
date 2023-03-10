@@ -1,4 +1,5 @@
 const cateSchema = require("../../models/categorySchema/categorySchema");
+const subcategory = require("../../models/categorySchema/subCategorySchema");
 
 const createCategory = async (req, res) => {
   const category = new cateSchema(req.body);
@@ -64,11 +65,11 @@ const categorySearch = async (req, res) => {
         status: "Success",
         categoryDetails: categoryData,
       });
-    }else{
-        res.status(200).json({
-            status:"Failed",
-            message:"Category Not Found"
-        })
+    } else {
+      res.status(200).json({
+        status: "Failed",
+        message: "Category Not Found",
+      });
     }
   } catch (err) {
     res.status(500).json({
@@ -78,9 +79,26 @@ const categorySearch = async (req, res) => {
   }
 };
 
-module.exports={
-    createCategory,
-    categoryList,
-    categoryUpdate,
-    categorySearch
-}
+const checkSubCategory = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const findData = await await subcategory.find({ category_Id: id });
+    res.status(200).json({
+      status: "Success",
+      message: findData
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+module.exports = {
+  createCategory,
+  categoryList,
+  categoryUpdate,
+  categorySearch,
+  checkSubCategory
+};

@@ -1,16 +1,31 @@
 const cateSchema = require("../../models/categorySchema/subCategorySchema");
 const category = require("../../models/categorySchema/categorySchema");
+const subSubCategory = require("../../models/categorySchema/subSubCategorySchema");
 
 const subCategory = async (req, res) => {
   const subCategory = new cateSchema(req.body);
   try {
     const cate = await category.find();
-    const cateData = cate.map((p) => p.categoryName);
     await subCategory.save();
     res.status(200).json({
       status: "Success",
       message: "Sub Category Create Successfully",
-      cateData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+const selectCategory = async (req, res) => {
+  const cate = await category.find();
+  try {
+    const cateData = cate.map((p) => p.categoryName);
+    res.status(200).json({
+      status: "Success",
+      listCate: cateData,
     });
   } catch (err) {
     res.status(500).json({
@@ -38,7 +53,9 @@ const subCategoryList = async (req, res) => {
 
 const subCategoryUpdate = async (req, res) => {
   const id = req.params.id;
+  const cate = await category.find();
   try {
+    const cateData = cate.map((p) => p.categoryName);
     const update = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -46,6 +63,7 @@ const subCategoryUpdate = async (req, res) => {
       status: "Success",
       message: "SubCategory updated",
       update,
+      cateData,
     });
   } catch (err) {
     res.status(500).json({
@@ -80,9 +98,27 @@ const subCategorySearch = async (req, res) => {
   }
 };
 
+const checkSubSubcategory = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const checkData = await subSubCategory.find({ subCategory_Id: id });
+    res.status(200).json({
+      status: "Success",
+      AllSubSubcategory: checkData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
 module.exports = {
   subCategory,
   subCategoryList,
   subCategoryUpdate,
   subCategorySearch,
+  selectCategory,
+  checkSubSubcategory,
 };

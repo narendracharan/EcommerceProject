@@ -7,5 +7,5 @@ router.post("/create",uploads.single("categoryPic"),categoryControllers.createCa
 router.get("/list",categoryControllers.categoryList)
 router.get("/search-category",categoryControllers.categorySearch)
 router.patch("/update/:id",categoryControllers.categoryUpdate)
-
+router.get("/sub/:id",categoryControllers.checkSubCategory)
 module.exports=router
