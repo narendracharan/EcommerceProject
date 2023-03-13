@@ -8,4 +8,6 @@ router.get("/list",categoryControllers.categoryList)
 router.get("/search-category",categoryControllers.categorySearch)
 router.patch("/update/:id",categoryControllers.categoryUpdate)
 router.get("/sub/:id",categoryControllers.checkSubCategory)
+router.get("/checkAttribute/:id",categoryControllers.checkAttribute)
+router.get("/checkValues/:id",categoryControllers.checkValues)
 module.exports=router

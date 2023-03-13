@@ -19,13 +19,31 @@ const subSubCategory = async (req, res) => {
   }
 };
 
+
+const checkAttribute = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const checkData = await Attribute.find({ subSubCategory_Id: id});
+    res.status(200).json({
+      status: "Success",
+      allAttribute: checkData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+
 const selectCategory = async (req, res) => {
   const cate = await category.find();
   try {
-    const cateData = cate.map((p) => p.categoryName);
+    const cateId = cate.map((p) => p._id);
     res.status(200).json({
       status: "Success",
-      listCate: cateData,
+      cateId
     });
   } catch (err) {
     res.status(500).json({
@@ -38,10 +56,10 @@ const selectCategory = async (req, res) => {
 const selectSubCategory = async (req, res) => {
   const subCate = await subCategory.find();
   try {
-    const subCateCategory = subCate.map((p) => p.subCategoryName);
+    const subCateCategoryID = subCate.map((p) =>p.category_Id);
     res.status(200).json({
       status: "Success",
-      subCateList: subCateCategory,
+      subCateCategoryID 
     });
   } catch (err) {
     res.status(500).json({
@@ -111,21 +129,6 @@ const subSubCategorySearch = async (req, res) => {
   }
 };
 
-const checkAttribute = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const checkData = await Attribute.find({ subSubCategory_Id: id });
-    res.status(200).json({
-      status: "Success",
-      allAttribute: checkData,
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-    });
-  }
-};
 
 module.exports = {
   subSubCategory,

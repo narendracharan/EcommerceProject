@@ -1,5 +1,9 @@
 const cateSchema = require("../../models/categorySchema/categorySchema");
 const subcategory = require("../../models/categorySchema/subCategorySchema");
+const subSubCategorySchema = require("../../models/categorySchema/subSubCategorySchema");
+const attributeSchema = require("../../models/categorySchema/attributeSchema");
+const subCategorySchema = require("../../models/categorySchema/subCategorySchema");
+const valuesSchema=require("../../models/categorySchema/valuesSchema")
 
 const createCategory = async (req, res) => {
   const category = new cateSchema(req.body);
@@ -18,6 +22,73 @@ const createCategory = async (req, res) => {
     });
   }
 };
+
+const checkSubCategory = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const subcategoryData = await subcategory.find({ category_Id: id })
+    const subSubCategoryData = await subSubCategorySchema.find({
+      category_Id: id,
+    });
+    res.status(200).json({
+      status: "Success",
+      subcategoryData,
+      subSubCategoryData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+const checkAttribute = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const subcategoryData = await subCategorySchema.find({ category_Id: id });
+    const subSubcategoryData = await subSubCategorySchema.find({
+      category_Id: id,
+    });
+    const attributeCategoryData = await attributeSchema.find({
+      category_Id: id,
+    });
+    res.status(200).json({
+      status: "Success",
+      subcategoryData,
+      subSubcategoryData,
+      attributeCategoryData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
+
+const checkValues=async(req,res)=>{
+  const id=req.params.id
+  try{
+    const subCategoryData=await subCategorySchema.find({category_Id:id})
+    const subSubCategoryData=await subSubCategorySchema.find({category_Id:id})
+    const attributeCategoryData=await attributeSchema.find({category_Id:id})
+    const valuesCategoryData=await valuesSchema.find({category_Id:id})
+    res.status(200).json({
+      status:"Success",
+      subCategoryData,
+      subSubCategoryData,
+      attributeCategoryData,
+      valuesCategoryData
+    })
+  }catch(err){
+    res.status(500).json({
+      status:"Failed",
+      message:err.message
+    })
+  }
+}
 
 const categoryList = async (req, res) => {
   try {
@@ -79,26 +150,12 @@ const categorySearch = async (req, res) => {
   }
 };
 
-const checkSubCategory = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const findData = await await subcategory.find({ category_Id: id });
-    res.status(200).json({
-      status: "Success",
-      message: findData
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-    });
-  }
-};
-
 module.exports = {
   createCategory,
   categoryList,
   categoryUpdate,
   categorySearch,
-  checkSubCategory
+  checkSubCategory,
+  checkAttribute,
+  checkValues
 };

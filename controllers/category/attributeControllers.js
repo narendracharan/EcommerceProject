@@ -20,10 +20,26 @@ const createAttribute = async (req, res) => {
   }
 };
 
+const checkValues = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const checkData = await values.find({ attribute_Id: id });
+    res.status(200).json({
+      status: "Success",
+      allValues: checkData,
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: err.message,
+    });
+  }
+};
+
 const selectCategory = async (req, res) => {
   const cate = await category.find();
   try {
-    const cateData = cate.map((p) => p.categoryName);
+    const cateData = cate.map((p) => p._id);
     res.status(200).json({
       status: "Success",
       cateList: cateData,
@@ -39,7 +55,7 @@ const selectCategory = async (req, res) => {
 const selectSubCategory = async (req, res) => {
   const subCate = await subCategory.find();
   try {
-    const subCateData = subCate.map((p) => p.subCategoryName);
+    const subCateData = subCate.map((p) => p._id);
     res.status(200).json({
       status: "Success",
       subCateList: subCateData,
@@ -55,7 +71,7 @@ const selectSubCategory = async (req, res) => {
 const selectSubSubCategory = async (req, res) => {
   const subSubCate = await subSubCategory.find();
   try {
-    const subSubCateData = subSubCate.map((p) => p.subSubCategoryName);
+    const subSubCateData = subSubCate.map((p) => p._id);
     res.status(200).json({
       sttaus: "Success",
       subSubCateList: subSubCateData,
@@ -128,21 +144,6 @@ const attributeSearch = async (req, res) => {
   }
 };
 
-const checkValues = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const checkData = await values.find({ attribute_Id: id });
-    res.status(200).json({
-      status: "Success",
-      allValues: checkData,
-    });
-  } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
-    });
-  }
-};
 module.exports = {
   createAttribute,
   attributeList,
