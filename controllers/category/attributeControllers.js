@@ -40,9 +40,15 @@ const selectCategory = async (req, res) => {
   const cate = await category.find();
   try {
     const cateData = cate.map((p) => p._id);
+    const cateName = cate.map((p) => p.categoryName);
+    const catestatus = cate.map((p) => p.status);
+    const cateShipment = cate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      cateList: cateData,
+      cateData,
+      cateName,
+      catestatus,
+      cateShipment,
     });
   } catch (err) {
     res.status(500).json({
@@ -56,9 +62,15 @@ const selectSubCategory = async (req, res) => {
   const subCate = await subCategory.find();
   try {
     const subCateData = subCate.map((p) => p._id);
+    const subCateName = subCate.map((p) => p.subCategoryName);
+    const subCateStatus = subCate.map((p) => p.status);
+    const subCateShipment = subCate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      subCateList: subCateData,
+      subCateData,
+      subCateName,
+      subCateStatus,
+      subCateShipment,
     });
   } catch (err) {
     res.status(500).json({
@@ -72,9 +84,15 @@ const selectSubSubCategory = async (req, res) => {
   const subSubCate = await subSubCategory.find();
   try {
     const subSubCateData = subSubCate.map((p) => p._id);
+    const subSubCateName = subSubCate.map((p) => p.subSubCategoryName);
+    const subSubCateStatus = subSubCate.map((p) => p.status);
+    const subSubCateShipment = subSubCate.map((p) => p.shipmentService);
     res.status(200).json({
       sttaus: "Success",
-      subSubCateList: subSubCateData,
+      subSubCateData,
+      subSubCateName,
+      subSubCateStatus,
+      subSubCateShipment,
     });
   } catch (err) {
     res.status(500).json({

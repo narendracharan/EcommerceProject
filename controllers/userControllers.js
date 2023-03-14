@@ -38,7 +38,7 @@ const userLogin = async (req, res) => {
       const login = await userSchema.findOne({ userEmail: userEmail });
       if (login != null) {
         const match = await bcrypt.compare(password, login.password);
-        if (!match) {
+        if (match) {
           const token = jwt.sign(
             { userID: login._id },
             process.env.SECRET_KEY,
@@ -89,7 +89,6 @@ const sendUserResetPassword = async (req, res) => {
         subject: "Email send for reset password",
         text: `<a href=${link}></a>`,
       });
-      console.log(info);
       res.status(200).json({
         status: "success",
         message: "Email Send Successfully",
@@ -138,7 +137,7 @@ const resetPassword = async (req, res) => {
     } else {
       res.status(403).json({
         status: "Failed",
-        message: "All filed are required",
+        message: "All Filed are required",
       });
     }
   } catch (err) {

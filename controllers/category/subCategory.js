@@ -25,7 +25,6 @@ const checkSubSubcategory = async (req, res) => {
     res.status(200).json({
       status: "Success",
       AllSubSubcategory: checkData,
-
     });
   } catch (err) {
     res.status(500).json({
@@ -35,14 +34,20 @@ const checkSubSubcategory = async (req, res) => {
   }
 };
 
-
 const selectCategory = async (req, res) => {
   const cate = await category.find();
   try {
-    const cateData = cate.map((p) =>p._id);
+    const cateId = cate.map((p) =>p._id);
+    const cateName = cate.map((p) =>p.categoryName);
+    const cateStatus = cate.map((p) =>p.status);
+    const cateShilment = cate.map((p) =>p.shipmentService);
     res.status(200).json({
       status: "Success",
-      listCate: cateData,
+     cateId,
+     cateName,
+     cateStatus,
+     cateShilment
+
     });
   } catch (err) {
     res.status(500).json({
@@ -77,7 +82,7 @@ const subCategoryUpdate = async (req, res) => {
     });
     res.status(200).json({
       status: "Success",
-      message: "SubCategory updated",
+      message: "SubCategory Updated",
       update
     });
   } catch (err) {

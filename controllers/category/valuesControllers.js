@@ -24,9 +24,15 @@ const selectCategory = async (req, res) => {
   const cate = await category.find();
   try {
     const cateData = cate.map((p) => p._id);
+    const cateName = cate.map((p) => p.categoryName);
+    const catestatus = cate.map((p) => p.status);
+    const cateShipment = cate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      catelist: cateData,
+      cateData,
+      cateName,
+      catestatus,
+      cateShipment,
     });
   } catch (err) {
     res.status(500).json({
@@ -40,9 +46,15 @@ const selectSubCategory = async (req, res) => {
   const subCate = await subCategory.find();
   try {
     const subCateData = subCate.map((p) => p._id);
+    const subCateName = subCate.map((p) => p.subCategoryName);
+    const subCateStatus = subCate.map((p) => p.status);
+    const subCateShipment = subCate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      subCateList: subCateData,
+      subCateData,
+      subCateName,
+      subCateStatus,
+      subCateShipment,
     });
   } catch (err) {
     res.status(500).json({
@@ -56,9 +68,15 @@ const selectSubSubCategory = async (req, res) => {
   const subSubCate = await subSubCategory.find();
   try {
     const subSubCateData = subSubCate.map((p) => p.subCategory_Id);
+    const subSubCateName = subSubCate.map((p) => p.subSubCategoryName);
+    const subSubCateStatus = subSubCate.map((p) => p.status);
+    const subSubCateShipment = subSubCate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      subSubCateList: subSubCateData,
+      subSubCateData,
+      subSubCateName,
+      subSubCateStatus,
+      subSubCateShipment,
     });
   } catch (err) {
     res.status(500).json({
@@ -72,9 +90,15 @@ const selectAttribute = async (req, res) => {
   const attributeCate = await attribute.find();
   try {
     const attributeCateData = attributeCate.map((p) => p._id);
+    const attributeCateName = attributeCate.map((p) => p.attributeName);
+    const attributeCateStatus = attributeCate.map((p) => p.status);
+    const attributeCateShipment = attributeCate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      attributeCateList: attributeCateData,
+      attributeCateData,
+      attributeCateName,
+      attributeCateStatus,
+      attributeCateShipment,
     });
   } catch (err) {
     res.status(500).json({
@@ -133,7 +157,7 @@ const valuesSearch = async (req, res) => {
     } else {
       res.status(200).json({
         status: "Failed",
-        message: "Values not found",
+        message: "Values Not Found",
       });
     }
   } catch (err) {

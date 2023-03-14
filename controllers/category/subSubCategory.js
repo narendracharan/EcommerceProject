@@ -2,6 +2,7 @@ const cateSchema = require("../../models/categorySchema/subSubCategorySchema");
 const category = require("../../models/categorySchema/categorySchema");
 const subCategory = require("../../models/categorySchema/subCategorySchema");
 const Attribute = require("../../models/categorySchema/attributeSchema");
+const values=require("../../models/categorySchema/valuesSchema")
 
 const subSubCategory = async (req, res) => {
   const subSubCategory = new cateSchema(req.body);
@@ -24,9 +25,11 @@ const checkAttribute = async (req, res) => {
   const id = req.params.id;
   try {
     const checkData = await Attribute.find({ subSubCategory_Id: id});
+    const valuesData=await values.find({subSubCategory_Id:id})
     res.status(200).json({
       status: "Success",
       allAttribute: checkData,
+      valuesData
     });
   } catch (err) {
     res.status(500).json({
@@ -41,9 +44,15 @@ const selectCategory = async (req, res) => {
   const cate = await category.find();
   try {
     const cateId = cate.map((p) => p._id);
+    const cateName = cate.map((p) => p.categoryName);
+    const cateStatus = cate.map((p) => p.status);
+    const cateShipment = cate.map((p) => p.shipmentService);
     res.status(200).json({
       status: "Success",
-      cateId
+      cateId,
+      cateName,
+      cateStatus,
+      cateShipment
     });
   } catch (err) {
     res.status(500).json({
@@ -57,9 +66,15 @@ const selectSubCategory = async (req, res) => {
   const subCate = await subCategory.find();
   try {
     const subCateCategoryID = subCate.map((p) =>p.category_Id);
+    const subCateCategoryName = subCate.map((p) =>p.subCategoryName);
+    const subCateCategorystatus = subCate.map((p) =>p.status);
+    const subCateCategoryshilpment = subCate.map((p) =>p.shipmentService);
     res.status(200).json({
       status: "Success",
-      subCateCategoryID 
+      subCateCategoryID ,
+      subCateCategoryName,
+      subCateCategorystatus,
+      subCateCategoryshilpment
     });
   } catch (err) {
     res.status(500).json({
