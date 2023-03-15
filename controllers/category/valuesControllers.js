@@ -156,17 +156,18 @@ const valuesSearch = async (req, res) => {
     });
     if (valuesData.length > 0) {
       res.status(200).json({
-        status: "Success",
-        valuesDetails: valuesData,
+        error:false,
+        error_code:200,
+        message:"Success",
+        results:{
+          valuesData
+        }
       });
     } else {
       res.status(200).json({
-        error: false,
+        error: true,
         error_code: 200,
-        message: "Success",
-        results: {
-          valuesData,
-        },
+        message:Error
       });
     }
   } catch (err) {
