@@ -5,15 +5,20 @@ const subSubCategory = require("../../models/categorySchema/subSubCategorySchema
 const subCategory = async (req, res) => {
   const subCategory = new cateSchema(req.body);
   try {
-    await subCategory.save();
+    const createSubCategory = await subCategory.save();
     res.status(200).json({
-      status: "Success",
-      message: "Sub Category Create Successfully",
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        createSubCategory,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -21,38 +26,40 @@ const subCategory = async (req, res) => {
 const checkSubSubcategory = async (req, res) => {
   const id = req.params.id;
   try {
-    const checkData = await subSubCategory.find({ subCategory_Id: id});
+    const checkData = await subSubCategory.find({ subCategory_Id: id });
     res.status(200).json({
-      status: "Success",
-      AllSubSubcategory: checkData,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        checkData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
 
 const selectCategory = async (req, res) => {
-  const cate = await category.find();
   try {
-    const cateId = cate.map((p) =>p._id);
-    const cateName = cate.map((p) =>p.categoryName);
-    const cateStatus = cate.map((p) =>p.status);
-    const cateShilment = cate.map((p) =>p.shipmentService);
+    const categoryData = await category.find();
     res.status(200).json({
-      status: "Success",
-     cateId,
-     cateName,
-     cateStatus,
-     cateShilment
-
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        categoryData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -61,34 +68,41 @@ const subCategoryList = async (req, res) => {
   try {
     const list = await cateSchema.find({});
     res.status(200).json({
-      status: "Success",
-      message: "All Sub Category List",
-      list,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        list,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
 
 const subCategoryUpdate = async (req, res) => {
   const id = req.params.id;
-  const cate = await category.find();
   try {
-    const update = await cateSchema.findByIdAndUpdate(id, req.body, {
+    const updated = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
-      status: "Success",
-      message: "SubCategory Updated",
-      update
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        updated,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -101,23 +115,28 @@ const subCategorySearch = async (req, res) => {
     });
     if (categoryData.length > 0) {
       res.status(200).json({
-        status: "Success",
-        subCategoryDetails: categoryData,
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          categoryData,
+        },
       });
     } else {
       res.status(200).json({
-        status: "Failed",
-        message: "subCategory Not Found",
+        error: true,
+        error_code: 200,
+        message: Error,
       });
     }
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
-
 
 module.exports = {
   subCategory,

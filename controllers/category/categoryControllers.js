@@ -1,24 +1,26 @@
 const cateSchema = require("../../models/categorySchema/categorySchema");
 const subcategory = require("../../models/categorySchema/subCategorySchema");
 const subSubCategorySchema = require("../../models/categorySchema/subSubCategorySchema");
-const attributeSchema = require("../../models/categorySchema/attributeSchema");
-const subCategorySchema = require("../../models/categorySchema/subCategorySchema");
-const valuesSchema=require("../../models/categorySchema/valuesSchema")
 
 const createCategory = async (req, res) => {
   const category = new cateSchema(req.body);
   try {
     const filepath = `/uploads/${req.file.filename}`;
     category.categoryPic = filepath;
-    await category.save();
+    const createCategory = await category.save();
     res.status(201).json({
-      status: "Success",
-      message: "Category Create Successfully",
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        createCategory,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: "Error",
     });
   }
 };
@@ -26,38 +28,44 @@ const createCategory = async (req, res) => {
 const checkSubCategory = async (req, res) => {
   const id = req.params.id;
   try {
-    const subcategoryData = await subcategory.find({ category_Id: id })
+    const subCategoryData = await subcategory.find({ category_Id: id });
     const subSubCategoryData = await subSubCategorySchema.find({
       category_Id: id,
     });
     res.status(200).json({
-      status: "Success",
-      subcategoryData,
-      subSubCategoryData,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        subCategoryData,
+        subSubCategoryData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: "Error",
     });
   }
 };
-
-
-
 
 const categoryList = async (req, res) => {
   try {
     const list = await cateSchema.find({});
     res.status(200).json({
-      status: "Success",
-      message: "All Category List",
-      list,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        list,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: "Error",
     });
   }
 };
@@ -69,14 +77,18 @@ const categoryUpdate = async (req, res) => {
       new: true,
     });
     res.status(200).json({
-      status: "Success",
-      message: "Category Updated Successfully",
-      updated,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        updated,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: "Error",
     });
   }
 };
@@ -89,19 +101,25 @@ const categorySearch = async (req, res) => {
     });
     if (categoryData.length > 0) {
       res.status(200).json({
-        status: "Success",
-        categoryDetails: categoryData,
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          categoryData,
+        },
       });
     } else {
       res.status(200).json({
-        status: "Failed",
-        message: "Category Not Found",
+        error: true,
+        error_code: 200,
+        message: "Error",
       });
     }
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: "Error",
     });
   }
 };
@@ -112,5 +130,4 @@ module.exports = {
   categoryUpdate,
   categorySearch,
   checkSubCategory,
- 
 };

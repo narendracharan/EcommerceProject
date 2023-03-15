@@ -7,103 +7,100 @@ const attribute = require("../../models/categorySchema/attributeSchema");
 const createValues = async (req, res) => {
   const values = new valueSchema(req.body);
   try {
-    await values.save();
+    const createValues = await values.save();
     res.status(200).json({
-      status: "Success",
-      message: "Create Values Sucessfully",
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        createValues,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
 
 const selectCategory = async (req, res) => {
-  const cate = await category.find();
   try {
-    const cateData = cate.map((p) => p._id);
-    const cateName = cate.map((p) => p.categoryName);
-    const catestatus = cate.map((p) => p.status);
-    const cateShipment = cate.map((p) => p.shipmentService);
+    const categoryData = await category.find();
     res.status(200).json({
-      status: "Success",
-      cateData,
-      cateName,
-      catestatus,
-      cateShipment,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        categoryData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
 
 const selectSubCategory = async (req, res) => {
-  const subCate = await subCategory.find();
   try {
-    const subCateData = subCate.map((p) => p._id);
-    const subCateName = subCate.map((p) => p.subCategoryName);
-    const subCateStatus = subCate.map((p) => p.status);
-    const subCateShipment = subCate.map((p) => p.shipmentService);
+    const subCategoryData = await subCategory.find();
     res.status(200).json({
-      status: "Success",
-      subCateData,
-      subCateName,
-      subCateStatus,
-      subCateShipment,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        subCategoryData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.messagej,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
 
 const selectSubSubCategory = async (req, res) => {
-  const subSubCate = await subSubCategory.find();
   try {
-    const subSubCateData = subSubCate.map((p) => p.subCategory_Id);
-    const subSubCateName = subSubCate.map((p) => p.subSubCategoryName);
-    const subSubCateStatus = subSubCate.map((p) => p.status);
-    const subSubCateShipment = subSubCate.map((p) => p.shipmentService);
+    const subSubCategoryData = await subSubCategory.find();
     res.status(200).json({
-      status: "Success",
-      subSubCateData,
-      subSubCateName,
-      subSubCateStatus,
-      subSubCateShipment,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        subSubCategoryData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
 
 const selectAttribute = async (req, res) => {
-  const attributeCate = await attribute.find();
   try {
-    const attributeCateData = attributeCate.map((p) => p._id);
-    const attributeCateName = attributeCate.map((p) => p.attributeName);
-    const attributeCateStatus = attributeCate.map((p) => p.status);
-    const attributeCateShipment = attributeCate.map((p) => p.shipmentService);
+    const attributeCategoryData = await attribute.find();
     res.status(200).json({
-      status: "Success",
-      attributeCateData,
-      attributeCateName,
-      attributeCateStatus,
-      attributeCateShipment,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        attributeCategoryData,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -112,14 +109,18 @@ const valuesList = async (req, res) => {
   try {
     const list = await valueSchema.find({});
     res.status(200).json({
-      status: "Success",
-      message: "All Values List",
-      list,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        list,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -131,14 +132,18 @@ const valuesUpdate = async (req, res) => {
       new: true,
     });
     res.status(200).json({
-      status: "Success",
-      message: "Values Updated",
-      updateValues,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        updateValues,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -156,14 +161,19 @@ const valuesSearch = async (req, res) => {
       });
     } else {
       res.status(200).json({
-        status: "Failed",
-        message: "Values Not Found",
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          valuesData,
+        },
       });
     }
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };

@@ -18,15 +18,20 @@ const userSignup = async (req, res) => {
     const Salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, Salt);
 
-    await user.save();
+    const createUser = await user.save();
     res.status(201).json({
-      status: "Success",
-      message: "User Signup SuccessFully",
+      error: false,
+      error_code: 201,
+      message: "Success",
+      results: {
+        createUser,
+      },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -45,32 +50,39 @@ const userLogin = async (req, res) => {
             { expiresIn: "3d" }
           );
           res.status(200).json({
-            status: "Success",
-            message: "User Login SuccessFully",
-            userToken: token,
+            error: false,
+            error_code: 200,
+            message: "Success",
+            results: {
+              token,
+            },
           });
         } else {
           res.status(403).json({
-            status: "Failed",
-            message: "password are incorrect",
+            error: true,
+            error_code: 403,
+            message: Error,
           });
         }
       } else {
         res.status(403).json({
-          status: "Failed",
-          message: "userEmail are incorrect",
+          error: true,
+          error_code: 403,
+          message: Error,
         });
       }
     } else {
       res.status(403).json({
-        status: "Failed",
-        message: "userEmail and password are inccorect",
+        error: true,
+        error_code: 403,
+        message: Error,
       });
     }
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
     });
   }
 };
@@ -90,22 +102,26 @@ const sendUserResetPassword = async (req, res) => {
         text: `<a href=${link}></a>`,
       });
       res.status(200).json({
-        status: "success",
-        message: "Email Send Successfully",
-        userToken: token,
-        user_ID: user._id,
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          useriD: user._id,
+          token,
+        },
       });
     } else {
-      res.status(550).json({
-        status: "Failed",
-        message: "userEmail is required",
+      res.status(400).json({
+        error: true,
+        error_code: 400,
+        message: Error,
       });
     }
   } catch (err) {
-    console.log(err);
     res.status(500).json({
-      status: "Failed",
-      message: err.message,
+      error: true,
+      error_code: 500,
+      message: Error,
     });
   }
 };
@@ -126,24 +142,30 @@ const resetPassword = async (req, res) => {
       } else {
         const salt = await bcrypt.genSalt(10);
         const new_Password = await bcrypt.hash(password, salt);
-        await User.findByIdAndUpdate(user.id, {
+        const createPassword = await User.findByIdAndUpdate(user.id, {
           $set: { password: new_Password },
         });
         res.status(200).json({
-          status: "Success",
-          message: "Password Reset Successfully",
+          error: false,
+          error_code: 200,
+          message: "Success",
+          results: {
+            createPassword,
+          },
         });
       }
     } else {
       res.status(403).json({
-        status: "Failed",
-        message: "All Filed are required",
+        error: true,
+        error_code: 403,
+        menubar: Error,
       });
     }
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: err.message,
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      menubar: Error,
     });
   }
 };
