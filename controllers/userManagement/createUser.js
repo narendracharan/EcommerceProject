@@ -31,12 +31,15 @@ const userList = async (req, res) => {
     } else {
       skip = (page - 1) * 3;
     }
+    const count = await userSchema.count();
+    const totalpage = Math.ceil(count / 3);
     userData = await userSchema.find().skip(skip).limit(4);
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
+        totalpage,
         userData,
       },
     });
