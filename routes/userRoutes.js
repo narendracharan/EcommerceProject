@@ -12,4 +12,5 @@ router.post("/createUser",userControllers.createUser)
 router.get("/userList",userControllers.userList)
 router.get("/userSearch",userControllers.userSearch)
 router.get("/details/:id",userControllers.userDetails)
+
 module.exports = router;

@@ -23,13 +23,21 @@ const createUser = async (req, res) => {
 
 const userList = async (req, res) => {
   try {
-    const list = await userSchema.find({});
+    var page = req.body.page;
+    var userData;
+    var skip;
+    if (page <= 1) {
+      skip = 0;
+    } else {
+      skip = (page - 1) * 3;
+    }
+    userData = await userSchema.find().skip(skip).limit(4);
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
-        list,
+        userData,
       },
     });
   } catch (err) {
