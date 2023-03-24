@@ -71,7 +71,7 @@ const OtpVerify = async (req, res) => {
 const userList = async (req, res) => {
   const userName = req.body.userName;
   try {
-    var { page, pagesize } = req.body.page;
+    var { page, pagesize } = req.body;
     var userData;
     var skip;
     if (page <= 1) {
