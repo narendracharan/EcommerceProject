@@ -17,7 +17,14 @@ const userSignup = async (req, res) => {
     }
     const Salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, Salt);
-
+    const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+    var mailOptions = {
+      from: "narendracharan25753@gmail.com",
+      to: userEmail,
+      subject: "Your Signup Successfully",
+      text: `this ${otp} otp verify to Email`,
+    };
+    transporter.sendMail(mailOptions);
     const createUser = await user.save();
     res.status(201).json({
       error: false,
@@ -25,6 +32,67 @@ const userSignup = async (req, res) => {
       message: "Success",
       results: {
         createUser,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+
+const OtpVerify = async (req, res) => {
+  try {
+    var { userEmail, otp } = req.body;
+    const matchOTP = await userSchema.findOne({ userEmail, otp });
+    if (matchOTP) {
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "Verify Otp Success",
+      });
+    } else {
+      res.status(400).json({
+        error: false,
+        error_code: 400,
+        message: Error,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: false,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+const userList = async (req, res) => {
+  const userName = req.body.userName;
+  try {
+    var { page, pagesize } = req.body.page;
+    var userData;
+    var skip;
+    if (page <= 1) {
+      skip = 0;
+    } else {
+      skip = (page - 1) * pagesize;
+    }
+    const count = await userSchema.count();
+    const totalpage = Math.ceil(count / pagesize);
+    userData = await userSchema.find().skip(skip).limit(pagesize);
+    const createData = await userSchema.find({
+      userName: { $regex: userName, option: "i" },
+    });
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        userData,
+        totalpage,
+        createData,
       },
     });
   } catch (err) {
@@ -78,6 +146,54 @@ const userLogin = async (req, res) => {
         message: Error,
       });
     }
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+
+const createUser = async (req, res) => {
+  const User = new userSchema(req.body);
+  try {
+    const createUser = await User.save();
+    res.status(201).json({
+      error: false,
+      error_code: 201,
+      message: "Success",
+      results: {
+        createUser,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+
+const userDetails = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const list = await userSchema.findById(id, {
+      _id: 0,
+      userName: 1,
+      mobileNumber: 1,
+      dateOfBirth: 1,
+      createdAt: 1,
+    });
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        list,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       error: true,
@@ -158,14 +274,14 @@ const resetPassword = async (req, res) => {
       res.status(403).json({
         error: true,
         error_code: 403,
-        menubar: Error,
+        message: Error,
       });
     }
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      menubar: Error,
+      message: Error,
     });
   }
 };
@@ -175,4 +291,8 @@ module.exports = {
   userLogin,
   sendUserResetPassword,
   resetPassword,
+  userList,
+  createUser,
+  userDetails,
+  OtpVerify,
 };
