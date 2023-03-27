@@ -5,6 +5,10 @@ const schema=new mongoose.Schema({
     type:String,
     require:true
     },
+    profile_Pic:{
+        type:String,
+        require:true
+    },
     userEmail:{
         type:String,
         require:true
@@ -15,6 +19,14 @@ const schema=new mongoose.Schema({
     },
     mobileNumber:{
         type:Number,
+        require:true
+    },
+    otp:{
+        type:String,
+        require:true
+    },
+    expiresAt:{
+        type:String,
         require:true
     },
     dateOfBirth:{

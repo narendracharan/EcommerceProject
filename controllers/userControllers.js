@@ -25,6 +25,12 @@ const userSignup = async (req, res) => {
       text: `this ${otp} otp verify to Email`,
     };
     transporter.sendMail(mailOptions);
+    const newOtpVerify = await new userSchema({
+      otp: otp,
+      expiresAt: Date.now() + 300,
+    });
+    await newOtpVerify.save();
+    await transporter.sendMail(mailOptions);
     const createUser = await user.save();
     res.status(201).json({
       error: false,
@@ -46,31 +52,59 @@ const userSignup = async (req, res) => {
 const OtpVerify = async (req, res) => {
   try {
     var { userEmail, otp } = req.body;
-    const matchOTP = await userSchema.findOne({ userEmail, otp });
+    const matchOTP = await userSchema.find({ userEmail, otp });
     if (matchOTP) {
       res.status(200).json({
         error: false,
         error_code: 200,
-        message: "Verify Otp Success",
+        message: "OTP Verified",
       });
     } else {
       res.status(400).json({
-        error: false,
+        error: true,
         error_code: 400,
         message: Error,
       });
     }
   } catch (error) {
-    res.status(500).json({
-      error: false,
+    console.log(error);
+    res.status(400).json({
+      error: true,
       error_code: 400,
       message: Error,
     });
   }
 };
+
+const editProfile = async (req, res) => {
+  try {
+    const filepath = `/uploads/${req.file.filepath}`;
+    const data = {
+      userName: req.body.userName,
+      userEmail: req.body.userEmail,
+      profile_Pic: filepath,
+    };
+    await userSchema.findByIdAndUpdate(req.params.id, data, { new: true });
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Profile Updated",
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+
 const userList = async (req, res) => {
   const userName = req.body.userName;
   try {
+    const createData = await userSchema.find({
+      userName: { $regex: userName, option: "i" },
+    });
     var { page, pagesize } = req.body;
     var userData;
     var skip;
@@ -82,17 +116,14 @@ const userList = async (req, res) => {
     const count = await userSchema.count();
     const totalpage = Math.ceil(count / pagesize);
     userData = await userSchema.find().skip(skip).limit(pagesize);
-    const createData = await userSchema.find({
-      userName: { $regex: userName, option: "i" },
-    });
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
+        createData,
         userData,
         totalpage,
-        createData,
       },
     });
   } catch (err) {
@@ -295,4 +326,5 @@ module.exports = {
   createUser,
   userDetails,
   OtpVerify,
+  editProfile,
 };
