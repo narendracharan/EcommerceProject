@@ -27,7 +27,7 @@ const userSignup = async (req, res) => {
     transporter.sendMail(mailOptions);
     const newOtpVerify = await new userSchema({
       otp: otp,
-      expiresAt: Date.now() + 300
+      expiresAt: Date.now() + 300,
     });
     await newOtpVerify.save();
     await transporter.sendMail(mailOptions);
@@ -49,28 +49,71 @@ const userSignup = async (req, res) => {
   }
 };
 
+const checkStatus = async (req, res) => {
+  const { id, status } = req.params;
+  try {
+    const Data = await userSchema.findById(id).select("status");
+    if (status == "true") {
+      const updateData = await userSchema.findByIdAndUpdate(
+        Data.id,
+        { $set: { status: status } },
+        { new: true }
+      );
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "status update successFully",
+        results: {
+          updateData,
+        },
+      });
+    } else if (status == "false") {
+      const updateData = await userSchema.findByIdAndUpdate(
+        Data.id,
+        { $set: { status: status } },
+        { new: true }
+      );
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "status update successFully",
+        results: {
+          updateData,
+        },
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+
 const OtpVerify = async (req, res) => {
   try {
     var { userEmail, otp } = req.body;
-   if(!userEmail || !otp){
-     throw Error("Empty otp details are not allowed")
-   }else{
-    const userOtpVerify= await userSchema.find({userEmail})
-     if(userOtpVerify.length<=0){
-      throw Error
-     }else{
-      const {expiresAt}=userOtpVerify[0]
-      if(expiresAt < Date.now()){
-        throw Error("otp has expired. please request again")
-      }else{
-        res.status(200).json({
-          error:false,
-          error_code:200,
-          message:"Otp Verify successFully"
-        })
+    if (!userEmail || !otp) {
+      throw Error("Empty otp details are not allowed");
+    } else {
+      const userOtpVerify = await userSchema.find({ userEmail });
+      if (userOtpVerify.length <= 0) {
+        throw Erro;
+        r;
+      } else {
+        const { expiresAt } = userOtpVerify[0];
+        if (expiresAt < Date.now()) {
+          throw Error("otp has expired. please request again");
+        } else {
+          res.status(200).json({
+            error: false,
+            error_code: 200,
+            message: "Otp Verify successFully",
+          });
+        }
       }
-     }
-  }
+    }
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -107,7 +150,6 @@ const editProfile = async (req, res) => {
 const userList = async (req, res) => {
   const userName = req.body.userName;
   try {
-  
     var { page, pagesize } = req.body;
     var skip;
     if (page <= 1) {
@@ -117,9 +159,12 @@ const userList = async (req, res) => {
     }
     const count = await userSchema.count();
     const totalpage = Math.ceil(count / pagesize);
-    const createData = await userSchema.find({
-      userName: { $regex: userName, option: "i" },
-    }).skip(skip).limit(pagesize)
+    const createData = await userSchema
+      .find({
+        userName: { $regex: userName, option: "i" },
+      })
+      .skip(skip)
+      .limit(pagesize);
     res.status(200).json({
       error: false,
       error_code: 200,
@@ -330,4 +375,5 @@ module.exports = {
   userDetails,
   OtpVerify,
   editProfile,
+  checkStatus,
 };

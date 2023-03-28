@@ -13,4 +13,5 @@ router.get("/userList",user.userList)
 router.get("/details/:id",user.userDetails)
 router.post("/verifyOtp",user.OtpVerify)
 router.post("/editProfile/:id",uploads.single("profile_Pic"),user.editProfile)
+router.get("/checkStatus/:id/:status",user.checkStatus)
 module.exports = router;
