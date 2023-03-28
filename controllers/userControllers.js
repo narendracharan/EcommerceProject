@@ -27,7 +27,7 @@ const userSignup = async (req, res) => {
     transporter.sendMail(mailOptions);
     const newOtpVerify = await new userSchema({
       otp: otp,
-      expiresAt: Date.now()
+      expiresAt: Date.now() + 300
     });
     await newOtpVerify.save();
     await transporter.sendMail(mailOptions);
