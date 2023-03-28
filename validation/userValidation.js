@@ -10,5 +10,4 @@ exports.signupValidation=[
         minUppercase:1,
         minNumbers:1
     })
-
 ]

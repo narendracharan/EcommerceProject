@@ -27,7 +27,7 @@ const userSignup = async (req, res) => {
     transporter.sendMail(mailOptions);
     const newOtpVerify = await new userSchema({
       otp: otp,
-      expiresAt: Date.now() + 300,
+      expiresAt: Date.now()
     });
     await newOtpVerify.save();
     await transporter.sendMail(mailOptions);
@@ -52,20 +52,25 @@ const userSignup = async (req, res) => {
 const OtpVerify = async (req, res) => {
   try {
     var { userEmail, otp } = req.body;
-    const matchOTP = await userSchema.find({ userEmail, otp });
-    if (matchOTP) {
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "OTP Verified",
-      });
-    } else {
-      res.status(400).json({
-        error: true,
-        error_code: 400,
-        message: Error,
-      });
-    }
+   if(!userEmail || !otp){
+     throw Error("Empty otp details are not allowed")
+   }else{
+    const userOtpVerify= await userSchema.find({userEmail})
+     if(userOtpVerify.length<=0){
+      throw Error
+     }else{
+      const {expiresAt}=userOtpVerify[0]
+      if(expiresAt < Date.now()){
+        throw Error("otp has expired. please request again")
+      }else{
+        res.status(200).json({
+          error:false,
+          error_code:200,
+          message:"Otp Verify successFully"
+        })
+      }
+     }
+  }
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -102,11 +107,8 @@ const editProfile = async (req, res) => {
 const userList = async (req, res) => {
   const userName = req.body.userName;
   try {
-    const createData = await userSchema.find({
-      userName: { $regex: userName, option: "i" },
-    });
+  
     var { page, pagesize } = req.body;
-    var userData;
     var skip;
     if (page <= 1) {
       skip = 0;
@@ -115,14 +117,15 @@ const userList = async (req, res) => {
     }
     const count = await userSchema.count();
     const totalpage = Math.ceil(count / pagesize);
-    userData = await userSchema.find().skip(skip).limit(pagesize);
+    const createData = await userSchema.find({
+      userName: { $regex: userName, option: "i" },
+    }).skip(skip).limit(pagesize)
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
         createData,
-        userData,
         totalpage,
       },
     });

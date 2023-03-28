@@ -26,7 +26,7 @@ const schema=new mongoose.Schema({
         require:true
     },
     expiresAt:{
-        type:String,
+        type:Date,
         require:true
     },
     dateOfBirth:{
