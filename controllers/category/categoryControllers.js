@@ -2,19 +2,17 @@ const cateSchema = require("../../models/categorySchema/categorySchema");
 const subcategory = require("../../models/categorySchema/subCategorySchema");
 const subSubCategorySchema = require("../../models/categorySchema/subSubCategorySchema");
 
+
 const createCategory = async (req, res) => {
   const category = new cateSchema(req.body);
   try {
     const filepath = `/uploads/${req.file.filename}`;
     category.categoryPic = filepath;
-    const createCategory = await category.save();
+    await category.save();
     res.status(201).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        createCategory,
-      },
+     error:false,
+     error_code:201,
+      message: "Category Create Successfully"
     });
   } catch (err) {
     res.status(400).json({

@@ -50,43 +50,18 @@ const userSignup = async (req, res) => {
 };
 
 const checkStatus = async (req, res) => {
-  const { id, status } = req.params;
+  const { id } = req.params;
   try {
-    const Data = await userSchema.findById(id).select("status");
-    if (status == "true") {
-      const updateData = await userSchema.findByIdAndUpdate(
-        Data.id,
-        { $set: { status: status } },
-        { new: true }
-      );
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "status update successFully",
-        results: {
-          updateData,
-        },
-      });
-    } else if (status == "false") {
-      const updateData = await userSchema.findByIdAndUpdate(
-        Data.id,
-        { $set: { status: status } },
-        { new: true }
-      );
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "status update successFully",
-        results: {
-          updateData,
-        },
-      });
-    }
+    const updateStatus=await userSchema.findByIdAndUpdate(id,req.body,{new:true})
+     res.status(200).json({
+      status:"Success",
+      updateStatus
+     })
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: Error,
+      message: err.message,
     });
   }
 };
@@ -99,8 +74,7 @@ const OtpVerify = async (req, res) => {
     } else {
       const userOtpVerify = await userSchema.find({ userEmail });
       if (userOtpVerify.length <= 0) {
-        throw Erro;
-        r;
+        throw Error;
       } else {
         const { expiresAt } = userOtpVerify[0];
         if (expiresAt < Date.now()) {
@@ -184,7 +158,8 @@ const userList = async (req, res) => {
 };
 
 const userLogin = async (req, res) => {
-  const { userEmail, password } = req.body;
+  const { userEmail, password,status } = req.body;
+
   try {
     if (userEmail && password) {
       const login = await userSchema.findOne({ userEmail: userEmail });
@@ -196,6 +171,7 @@ const userLogin = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: "3d" }
           );
+          if(status =="true"){
           res.status(200).json({
             error: false,
             error_code: 200,
@@ -204,32 +180,39 @@ const userLogin = async (req, res) => {
               token,
             },
           });
+        }else{
+          res.status(400).json({
+            error:true,
+            error_code:400,
+            message:"Permission Not allowed",
+          })
+        }
         } else {
           res.status(403).json({
             error: true,
             error_code: 403,
-            message: Error,
+            message: "user Password are incorrect",
           });
         }
       } else {
         res.status(403).json({
           error: true,
           error_code: 403,
-          message: Error,
+          message: "user Email are incorrect",
         });
       }
     } else {
       res.status(403).json({
         error: true,
         error_code: 403,
-        message: Error,
+        message: "user email and password are not valid",
       });
     }
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: Error,
+      message: err.message,
     });
   }
 };
