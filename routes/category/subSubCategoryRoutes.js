@@ -9,4 +9,5 @@ router.get("/subSubCategorySearch",subSubCategoryContollers.subSubCategorySearch
 router.get("/selectCategory",subSubCategoryContollers.selectCategory)
 router.get("/selectSubCategory",subSubCategoryContollers.selectSubCategory)
 router.get("/checkAttribute/:id",subSubCategoryContollers.checkAttribute)
+router.post("/checkstatus/:id",subSubCategoryContollers.checkStatus)
 module.exports=router

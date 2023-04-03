@@ -8,4 +8,5 @@ router.patch("/subCategoryUpdate/:id",subCategoryController.subCategoryUpdate)
 router.get("/subCategorySearch",subCategoryController.subCategorySearch)
 router.get("/selectCategory",subCategoryController.selectCategory)
 router.get("/checkSubSubCategory/:id",subCategoryController.checkSubSubcategory)
+router.post("/checkstatus/:id",subCategoryController.checkStatus)
 module.exports=router

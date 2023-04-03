@@ -4,21 +4,47 @@ const subSubCategory = require("../../models/categorySchema/subSubCategorySchema
 
 const subCategory = async (req, res) => {
   const subCategory = new cateSchema(req.body);
+  const {status}=req.body
   try {
     const createSubCategory = await subCategory.save();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        createSubCategory,
-      },
-    });
+    if(status =="true"){
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          createSubCategory,
+        },
+      });
+    }else{
+      res.status(400).json({
+        error:true,
+        error_code:400,
+        message:"Permission Not Allowed"
+      })
+    }
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
       message: Error,
+    });
+  }
+};
+
+const checkStatus = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updateStatus=await cateSchema.findByIdAndUpdate(id,req.body,{new:true})
+     res.status(200).json({
+      status:"Success",
+      updateStatus
+     })
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: err.message,
     });
   }
 };
@@ -145,4 +171,5 @@ module.exports = {
   subCategorySearch,
   selectCategory,
   checkSubSubcategory,
+  checkStatus
 };

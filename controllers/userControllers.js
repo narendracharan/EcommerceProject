@@ -159,7 +159,6 @@ const userList = async (req, res) => {
 
 const userLogin = async (req, res) => {
   const { userEmail, password,status } = req.body;
-
   try {
     if (userEmail && password) {
       const login = await userSchema.findOne({ userEmail: userEmail });
