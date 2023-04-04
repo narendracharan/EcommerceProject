@@ -1,6 +1,6 @@
 const express=require("express")
 const router=express.Router()
-const subSubCategoryContollers=require("../../controllers/category/subSubCategory")
+const subSubCategoryContollers=require("../../controllers/userPanel/subSubCategory")
 
 router.post("/createSubSubCategory",subSubCategoryContollers.subSubCategory)
 router.get("/subSubCategoryList",subSubCategoryContollers.subSubCategoryList)

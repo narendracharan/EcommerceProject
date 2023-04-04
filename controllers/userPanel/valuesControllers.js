@@ -1,8 +1,8 @@
-const valueSchema = require("../../models/categorySchema/valuesSchema");
-const category = require("../../models/categorySchema/categorySchema");
-const subCategory = require("../../models/categorySchema/subCategorySchema");
-const subSubCategory = require("../../models/categorySchema/subSubCategorySchema");
-const attribute = require("../../models/categorySchema/attributeSchema");
+const valueSchema = require("../../models/userSchema/valuesSchema");
+const category = require("../../models/userSchema/categorySchema");
+const subCategory = require("../../models/userSchema/subCategorySchema");
+const subSubCategory = require("../../models/userSchema/subSubCategorySchema");
+const attribute = require("../../models/userSchema/attributeSchema");
 
 const createValues = async (req, res) => {
   const values = new valueSchema(req.body);

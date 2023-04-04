@@ -1,16 +1,14 @@
-const cateSchema = require("../../models/categorySchema/categorySchema");
-const subcategory = require("../../models/categorySchema/subCategorySchema");
-const subSubCategorySchema = require("../../models/categorySchema/subSubCategorySchema");
+const cateSchema = require("../../models/userSchema/categorySchema");
+const subcategory = require("../../models/userSchema/subCategorySchema");
+const subSubCategorySchema = require("../../models/userSchema/subSubCategorySchema");
 
 
 const createCategory = async (req, res) => {
   const category = new cateSchema(req.body);
-  const {status}=req.body;
   try {
     const filepath = `/uploads/${req.file.filename}`;
     category.categoryPic = filepath;
-    const saveCategoty=  await category.save();
-    if(status =="true"){
+    const saveCategoty =  await category.save();
       res.status(201).json({
         error:false,
         error_code:201,
@@ -19,13 +17,6 @@ const createCategory = async (req, res) => {
           saveCategoty
          }
        });
-    }else{
-      res.status(400).json({
-        error:false,
-        error_code:400,
-         message: "Permission Not Allowed"
-       });
-    }
   } catch (err) {
     res.status(400).json({
       error: true,

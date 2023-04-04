@@ -1,6 +1,6 @@
 const express=require("express")
 const router=express.Router()
-const categoryControllers=require("../../controllers/category/categoryControllers")
+const categoryControllers=require("../../controllers/userPanel/categoryControllers")
 const {uploads}=require("../../middleware/imageStorage")
 
 router.post("/create",uploads.single("categoryPic"),categoryControllers.createCategory)

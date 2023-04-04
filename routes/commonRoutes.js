@@ -1,7 +1,7 @@
 const express=require("express")
 const router=express.Router()
-const user=require("./userRoutes")
-const category=require("./category/commonRoutes")
+const user=require("./adminRoutes/userRoutes")
+const category=require("./userRoutes/commonRoutes")
 
 router.use("/user",user)
 router.use("/category",category)

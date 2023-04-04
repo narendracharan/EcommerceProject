@@ -1,21 +1,30 @@
-const cateSchema = require("../../models/categorySchema/attributeSchema");
-const category = require("../../models/categorySchema/categorySchema");
-const subCategory = require("../../models/categorySchema/subCategorySchema");
-const subSubCategory = require("../../models/categorySchema/subSubCategorySchema");
-const values = require("../../models/categorySchema/valuesSchema");
+const cateSchema = require("../../models/userSchema/subSubCategorySchema")
+const category = require("../../models/userSchema/categorySchema")
+const subCategory = require("../../models/userSchema/subCategorySchema");
+const Attribute = require("../../models/userSchema/attributeSchema");
+const values = require("../../models/userSchema/valuesSchema");
 
-const createAttribute = async (req, res) => {
-  const attribute = new cateSchema(req.body);
+const subSubCategory = async (req, res) => {
+  const subSubCategory = new cateSchema(req.body);
+  const status=req.body.status
   try {
-    const createAttribute = await attribute.save();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        createAttribute,
-      },
-    });
+    const createSubSubCategory = await subSubCategory.save();
+    if(status =="true"){
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          createSubSubCategory,
+        },
+      });
+    }else{
+      req.status(400).json({
+        error:true,
+        error_code:400,
+        message:"Permission not allowed"
+      })
+    }
   } catch (err) {
     res.status(400).json({
       error: true,
@@ -25,16 +34,35 @@ const createAttribute = async (req, res) => {
   }
 };
 
-const checkValues = async (req, res) => {
+const checkStatus = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updateStatus=await cateSchema.findByIdAndUpdate(id,req.body,{new:true})
+     res.status(200).json({
+      status:"Success",
+      updateStatus
+     })
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: err.message,
+    });
+  }
+};
+
+const checkAttribute = async (req, res) => {
   const id = req.params.id;
   try {
-    const checkData = await values.find({ attribute_Id: id });
+    const checkData = await Attribute.find({ subSubCategory_Id: id });
+    const valuesData = await values.find({ subSubCategory_Id: id });
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
         checkData,
+        valuesData,
       },
     });
   } catch (err) {
@@ -86,27 +114,7 @@ const selectSubCategory = async (req, res) => {
   }
 };
 
-const selectSubSubCategory = async (req, res) => {
-  try {
-    const subSubCategoryData = await subSubCategory.find();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        subSubCategoryData,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
-  }
-};
-
-const attributeList = async (req, res) => {
+const subSubCategoryList = async (req, res) => {
   try {
     const list = await cateSchema.find({});
     res.status(200).json({
@@ -126,7 +134,7 @@ const attributeList = async (req, res) => {
   }
 };
 
-const attributeUpdate = async (req, res) => {
+const subSubCategoryUpdate = async (req, res) => {
   const id = req.params.id;
   try {
     const update = await cateSchema.findByIdAndUpdate(id, req.body, {
@@ -137,7 +145,7 @@ const attributeUpdate = async (req, res) => {
       error_code: 200,
       message: "Success",
       results: {
-        update,
+        update, 
       },
     });
   } catch (err) {
@@ -149,11 +157,11 @@ const attributeUpdate = async (req, res) => {
   }
 };
 
-const attributeSearch = async (req, res) => {
-  const attribute = req.body.attributes;
+const subSubCategorySearch = async (req, res) => {
+  const subSubCategory = req.body.subSubCategoryName;
   try {
     const categoryData = await cateSchema.find({
-      attributes: { $regex: attribute, $options: "i" },
+      subSubCategoryName: { $regex: subSubCategory, $options: "i" },
     });
     if (categoryData.length > 0) {
       res.status(200).json({
@@ -181,12 +189,12 @@ const attributeSearch = async (req, res) => {
 };
 
 module.exports = {
-  createAttribute,
-  attributeList,
-  attributeUpdate,
-  attributeSearch,
+  subSubCategory,
+  subSubCategoryList,
+  subSubCategoryUpdate,
+  subSubCategorySearch,
   selectCategory,
   selectSubCategory,
-  selectSubSubCategory,
-  checkValues,
+  checkAttribute,
+  checkStatus
 };

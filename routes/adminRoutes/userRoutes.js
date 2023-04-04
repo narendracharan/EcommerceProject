@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const user = require("../controllers/userControllers");
-const { uploads } = require("../middleware/imageStorage");
-const { signupValidation } = require("../validation/userValidation");
+const user = require("../../controllers/adminPanel/userControllers");
+const { uploads } = require("../../middleware/imageStorage");
+const { signupValidation } = require("../../validation/userValidation");
 
 router.post("/signup", signupValidation, user.userSignup);
 router.post("/login", user.userLogin);

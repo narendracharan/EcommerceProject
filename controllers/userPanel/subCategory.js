@@ -1,28 +1,26 @@
-const cateSchema = require("../../models/categorySchema/subSubCategorySchema");
-const category = require("../../models/categorySchema/categorySchema");
-const subCategory = require("../../models/categorySchema/subCategorySchema");
-const Attribute = require("../../models/categorySchema/attributeSchema");
-const values = require("../../models/categorySchema/valuesSchema");
+const cateSchema = require("../../models/userSchema/subCategorySchema");
+const category = require("../../models/userSchema/categorySchema");
+const subSubCategory = require("../../models/userSchema/subSubCategorySchema");
 
-const subSubCategory = async (req, res) => {
-  const subSubCategory = new cateSchema(req.body);
-  const {status}=req.body
+const subCategory = async (req, res) => {
+  const subCategory = new cateSchema(req.body);
+ const status=req.body.status
   try {
-    const createSubSubCategory = await subSubCategory.save();
+    const createSubCategory = await subCategory.save();
     if(status =="true"){
       res.status(200).json({
         error: false,
         error_code: 200,
         message: "Success",
         results: {
-          createSubSubCategory,
+          createSubCategory,
         },
       });
     }else{
-      req.status(400).json({
+      res.status(400).json({
         error:true,
         error_code:400,
-        message:"Permission not allowed"
+        message:"Permission Not Allowed"
       })
     }
   } catch (err) {
@@ -51,18 +49,16 @@ const checkStatus = async (req, res) => {
   }
 };
 
-const checkAttribute = async (req, res) => {
+const checkSubSubcategory = async (req, res) => {
   const id = req.params.id;
   try {
-    const checkData = await Attribute.find({ subSubCategory_Id: id });
-    const valuesData = await values.find({ subSubCategory_Id: id });
+    const checkData = await subSubCategory.find({ subCategory_Id: id });
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
         checkData,
-        valuesData,
       },
     });
   } catch (err) {
@@ -94,27 +90,7 @@ const selectCategory = async (req, res) => {
   }
 };
 
-const selectSubCategory = async (req, res) => {
-  try {
-    const subCategoryData = await subCategory.find();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        subCategoryData,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
-  }
-};
-
-const subSubCategoryList = async (req, res) => {
+const subCategoryList = async (req, res) => {
   try {
     const list = await cateSchema.find({});
     res.status(200).json({
@@ -134,10 +110,10 @@ const subSubCategoryList = async (req, res) => {
   }
 };
 
-const subSubCategoryUpdate = async (req, res) => {
+const subCategoryUpdate = async (req, res) => {
   const id = req.params.id;
   try {
-    const update = await cateSchema.findByIdAndUpdate(id, req.body, {
+    const updated = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
@@ -145,7 +121,7 @@ const subSubCategoryUpdate = async (req, res) => {
       error_code: 200,
       message: "Success",
       results: {
-        update, 
+        updated,
       },
     });
   } catch (err) {
@@ -157,11 +133,11 @@ const subSubCategoryUpdate = async (req, res) => {
   }
 };
 
-const subSubCategorySearch = async (req, res) => {
-  const subSubCategory = req.body.subSubCategoryName;
+const subCategorySearch = async (req, res) => {
+  const subCategory = req.body.subCategory;
   try {
     const categoryData = await cateSchema.find({
-      subSubCategoryName: { $regex: subSubCategory, $options: "i" },
+      subCategory: { $regex: subCategory, $options: "i" },
     });
     if (categoryData.length > 0) {
       res.status(200).json({
@@ -189,12 +165,11 @@ const subSubCategorySearch = async (req, res) => {
 };
 
 module.exports = {
-  subSubCategory,
-  subSubCategoryList,
-  subSubCategoryUpdate,
-  subSubCategorySearch,
+  subCategory,
+  subCategoryList,
+  subCategoryUpdate,
+  subCategorySearch,
   selectCategory,
-  selectSubCategory,
-  checkAttribute,
+  checkSubSubcategory,
   checkStatus
 };

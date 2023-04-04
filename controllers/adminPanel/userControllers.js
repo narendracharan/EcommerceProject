@@ -1,8 +1,8 @@
-const userSchema = require("../models/userSchema");
-const User = require("../models/userSchema");
+const userSchema = require("../../models/adminSchema/userSchema");
+const User = require("../../models/adminSchema/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { transporter } = require("../service/mailService");
+const { transporter } = require("../../service/mailService");
 
 const userSignup = async (req, res) => {
   const user = new userSchema(req.body);

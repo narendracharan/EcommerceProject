@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const attributeControllers = require("../../controllers/category/attributeControllers");
+const attributeControllers = require("../../controllers/userPanel/attributeControllers");
 
 router.post("/createAttribute", attributeControllers.createAttribute);
 router.get("/attributeList", attributeControllers.attributeList);

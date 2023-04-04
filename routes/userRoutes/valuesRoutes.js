@@ -1,6 +1,6 @@
 const express=require("express")
 const router=express.Router()
-const valuesControllers=require("../../controllers/category/valuesControllers")
+const valuesControllers=require("../../controllers/userPanel/valuesControllers")
 
 router.post("/createValues",valuesControllers.createValues)
 router.get("/valuesList",valuesControllers.valuesList)
