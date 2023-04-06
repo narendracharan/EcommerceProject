@@ -3,11 +3,12 @@ const category = require("../../models/userSchema/categorySchema");
 const subSubCategory = require("../../models/userSchema/subSubCategorySchema");
 
 const subCategory = async (req, res) => {
-  const subCategory = new cateSchema(req.body);
- const status=req.body.status
   try {
+    const id=req.params.id
+    const subCategory = new cateSchema(req.body);
+    const cate=await  cateSchema.findOne({category_Id:id})
     const createSubCategory = await subCategory.save();
-    if(status =="true"){
+    if (cate.status == true) {
       res.status(200).json({
         error: false,
         error_code: 200,
@@ -16,12 +17,12 @@ const subCategory = async (req, res) => {
           createSubCategory,
         },
       });
-    }else{
+    } else if(cate.status == false) {
       res.status(400).json({
-        error:true,
-        error_code:400,
-        message:"Permission Not Allowed"
-      })
+        error: true,
+        error_code: 400,
+        message: "Permission Not Allowed",
+      });
     }
   } catch (err) {
     res.status(400).json({
@@ -32,14 +33,46 @@ const subCategory = async (req, res) => {
   }
 };
 
-const checkStatus = async (req, res) => {
-  const { id } = req.params;
+const Status = async (req, res) => {
   try {
-    const updateStatus=await cateSchema.findByIdAndUpdate(id,req.body,{new:true})
-     res.status(200).json({
-      status:"Success",
-      updateStatus
-     })
+    const id = req.params.id;
+    const data = await cateSchema.findOne({category_Id:id})
+    console.log(data);
+    if (data.status == true) {
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "all Data",
+        results:{
+          data
+        }
+      });
+    } else {
+      res.status(400).json({
+        error: true,
+        error_code: 400,
+        message: "Permission not allowed",
+      });
+    }
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: false,
+      message: Error,
+    });
+  }
+};
+
+const checkStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateStatus = await cateSchema.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      status: "Success",
+      updateStatus,
+    });
   } catch (err) {
     res.status(400).json({
       error: true,
@@ -50,8 +83,8 @@ const checkStatus = async (req, res) => {
 };
 
 const checkSubSubcategory = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const checkData = await subSubCategory.find({ subCategory_Id: id });
     res.status(200).json({
       error: false,
@@ -111,8 +144,8 @@ const subCategoryList = async (req, res) => {
 };
 
 const subCategoryUpdate = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const updated = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -134,8 +167,8 @@ const subCategoryUpdate = async (req, res) => {
 };
 
 const subCategorySearch = async (req, res) => {
-  const subCategory = req.body.subCategory;
   try {
+    const subCategory = req.body.subCategory;
     const categoryData = await cateSchema.find({
       subCategory: { $regex: subCategory, $options: "i" },
     });
@@ -171,5 +204,6 @@ module.exports = {
   subCategorySearch,
   selectCategory,
   checkSubSubcategory,
-  checkStatus
+  checkStatus,
+  Status,
 };

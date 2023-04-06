@@ -5,9 +5,12 @@ const subSubCategory = require("../../models/userSchema/subSubCategorySchema");
 const attribute = require("../../models/userSchema/attributeSchema");
 
 const createValues = async (req, res) => {
-  const values = new valueSchema(req.body);
   try {
+    const id=req.params.id
+    const values = new valueSchema(req.body);
+    const cate=await valueSchema.findOne({category_Id:id})
     const createValues = await values.save();
+    if(cate.status == true){
     res.status(200).json({
       error: false,
       error_code: 200,
@@ -16,11 +19,37 @@ const createValues = async (req, res) => {
         createValues,
       },
     });
+  }else if(cate.status ==false){
+    res.status(400).json({
+      error:true,
+      error_code:400,
+      message:"Permission Not allowed"
+    })
+  }
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
       message: Error,
+    });
+  }
+};
+
+const checkStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateStatus = await valueSchema.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      status: "Success",
+      updateStatus,
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: err.message,
     });
   }
 };
@@ -126,8 +155,8 @@ const valuesList = async (req, res) => {
 };
 
 const valuesUpdate = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const updateValues = await valueSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -149,25 +178,25 @@ const valuesUpdate = async (req, res) => {
 };
 
 const valuesSearch = async (req, res) => {
-  const values = req.body.valuesName;
   try {
+    const values = req.body.valuesName;
     const valuesData = await valueSchema.find({
       valuesName: { $regex: values, $options: "i" },
     });
     if (valuesData.length > 0) {
       res.status(200).json({
-        error:false,
-        error_code:200,
-        message:"Success",
-        results:{
-          valuesData
-        }
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          valuesData,
+        },
       });
     } else {
       res.status(200).json({
         error: true,
         error_code: 200,
-        message:Error
+        message: Error,
       });
     }
   } catch (err) {
@@ -188,4 +217,5 @@ module.exports = {
   selectSubCategory,
   selectSubSubCategory,
   selectAttribute,
+  checkStatus
 };

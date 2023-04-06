@@ -52,11 +52,13 @@ const userSignup = async (req, res) => {
 const checkStatus = async (req, res) => {
   const { id } = req.params;
   try {
-    const updateStatus=await userSchema.findByIdAndUpdate(id,req.body,{new:true})
-     res.status(200).json({
-      status:"Success",
-      updateStatus
-     })
+    const updateStatus = await userSchema.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      status: "Success",
+      updateStatus,
+    });
   } catch (err) {
     res.status(400).json({
       error: true,
@@ -158,8 +160,8 @@ const userList = async (req, res) => {
 };
 
 const userLogin = async (req, res) => {
-  const { userEmail, password,status } = req.body;
   try {
+    const { userEmail, password, status } = req.body;
     if (userEmail && password) {
       const login = await userSchema.findOne({ userEmail: userEmail });
       if (login != null) {
@@ -170,22 +172,22 @@ const userLogin = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: "3d" }
           );
-          if(status =="true"){
-          res.status(200).json({
-            error: false,
-            error_code: 200,
-            message: "Success",
-            results: {
-              token,
-            },
-          });
-        }else{
-          res.status(400).json({
-            error:true,
-            error_code:400,
-            message:"Permission Not allowed",
-          })
-        }
+          if (status == true) {
+            res.status(200).json({
+              error: false,
+              error_code: 200,
+              message: "Success",
+              results: {
+                token,
+              },
+            });
+          } else {
+            res.status(400).json({
+              error: true,
+              error_code: 400,
+              message: "Permission Not allowed",
+            });
+          }
         } else {
           res.status(403).json({
             error: true,
@@ -217,8 +219,8 @@ const userLogin = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const User = new userSchema(req.body);
   try {
+    const User = new userSchema(req.body);
     const createUser = await User.save();
     res.status(201).json({
       error: false,
@@ -238,8 +240,8 @@ const createUser = async (req, res) => {
 };
 
 const userDetails = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const list = await userSchema.findById(id, {
       _id: 0,
       userName: 1,
@@ -265,8 +267,8 @@ const userDetails = async (req, res) => {
 };
 
 const sendUserResetPassword = async (req, res) => {
-  const { userEmail } = req.body;
   try {
+    const { userEmail } = req.body;
     const user = await User.findOne({ userEmail: userEmail });
     if (user) {
       const secret = user._id + process.env.SECRET_KEY;

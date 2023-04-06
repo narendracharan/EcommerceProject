@@ -4,8 +4,8 @@ const subSubCategorySchema = require("../../models/userSchema/subSubCategorySche
 
 
 const createCategory = async (req, res) => {
-  const category = new cateSchema(req.body);
   try {
+    const category = new cateSchema(req.body);
     const filepath = `/uploads/${req.file.filename}`;
     category.categoryPic = filepath;
     const saveCategoty =  await category.save();
@@ -27,8 +27,8 @@ const createCategory = async (req, res) => {
 };
 
 const checkStatus = async (req, res) => {
-  const { id } = req.params;
   try {
+    const { id } = req.params;
     const updateStatus=await cateSchema.findByIdAndUpdate(id,req.body,{new:true})
      res.status(200).json({
       status:"Success",
@@ -45,8 +45,8 @@ const checkStatus = async (req, res) => {
 
 
 const checkSubCategory = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const subCategoryData = await subcategory.find({ category_Id: id });
     const subSubCategoryData = await subSubCategorySchema.find({
       category_Id: id,
@@ -90,8 +90,8 @@ const categoryList = async (req, res) => {
 };
 
 const categoryUpdate = async (req, res) => {
-  const id = req.params.id;
   try {
+    const id = req.params.id;
     const updated = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -113,8 +113,8 @@ const categoryUpdate = async (req, res) => {
 };
 
 const categorySearch = async (req, res) => {
-  const category = req.body.categoryName;
   try {
+    const category = req.body.categoryName;
     const categoryData = await cateSchema.find({
       categoryName: { $regex: category, $options: "i" },
     });
