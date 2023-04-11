@@ -1,27 +1,29 @@
 const cateSchema = require("../../models/userSchema/categorySchema");
+const subCategorySchema = require("../../models/userSchema/subCategorySchema");
 const subcategory = require("../../models/userSchema/subCategorySchema");
 const subSubCategorySchema = require("../../models/userSchema/subSubCategorySchema");
-
+const attributeSchema = require("../../models/userSchema/attributeSchema");
+const valueSchema = require("../../models/userSchema/valuesSchema");
 
 const createCategory = async (req, res) => {
   try {
     const category = new cateSchema(req.body);
     const filepath = `/uploads/${req.file.filename}`;
     category.categoryPic = filepath;
-    const saveCategoty =  await category.save();
-      res.status(201).json({
-        error:false,
-        error_code:201,
-         message: "Category Create Successfully",
-         results:{
-          saveCategoty
-         }
-       });
+    const saveCategoty = await category.save();
+    res.status(201).json({
+      error: false,
+      error_code: 201,
+      message: "Category Create Successfully",
+      results: {
+        saveCategoty,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: "Error",
+      message: Error,
     });
   }
 };
@@ -29,20 +31,50 @@ const createCategory = async (req, res) => {
 const checkStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateStatus=await cateSchema.findByIdAndUpdate(id,req.body,{new:true})
-     res.status(200).json({
-      status:"Success",
-      updateStatus
-     })
+    const updateStatus = await cateSchema.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    const updateSubCategoryStatus = await subCategorySchema.findOneAndUpdate(
+      { category_Id: id },
+      req.body,
+      { new: true }
+    );
+    const updateSubSubCategoryStatus =
+      await subSubCategorySchema.findOneAndUpdate(
+        { category_Id: id },
+        req.body,
+        { new: true }
+      );
+    const updateAttributeStatus = await attributeSchema.findOneAndUpdate(
+      { category_Id: id },
+      req.body,
+      { new: true }
+    );
+    const updateValuesStatus = await valueSchema.findOneAndUpdate(
+      { category_Id: id },
+      req.body,
+      { new: true }
+    );
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        updateStatus,
+        updateSubCategoryStatus,
+        updateSubSubCategoryStatus,
+        updateAttributeStatus,
+        updateValuesStatus,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: err.message,
+      message: Error,
     });
   }
 };
-
 
 const checkSubCategory = async (req, res) => {
   try {
@@ -64,7 +96,7 @@ const checkSubCategory = async (req, res) => {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: "Error",
+      message: Error,
     });
   }
 };
@@ -84,7 +116,7 @@ const categoryList = async (req, res) => {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: "Error",
+      message: Error,
     });
   }
 };
@@ -107,7 +139,7 @@ const categoryUpdate = async (req, res) => {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: "Error",
+      message: Error,
     });
   }
 };
@@ -131,14 +163,14 @@ const categorySearch = async (req, res) => {
       res.status(200).json({
         error: true,
         error_code: 200,
-        message: "Error",
+        message: Error,
       });
     }
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: "Error",
+      message: Error,
     });
   }
 };
@@ -149,5 +181,5 @@ module.exports = {
   categoryUpdate,
   categorySearch,
   checkSubCategory,
-  checkStatus
+  checkStatus,
 };

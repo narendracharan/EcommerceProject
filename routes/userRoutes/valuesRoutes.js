@@ -2,7 +2,7 @@ const express=require("express")
 const router=express.Router()
 const valuesControllers=require("../../controllers/userPanel/valuesControllers")
 
-router.post("/createValues/:id",valuesControllers.createValues)
+router.post("/createValues",valuesControllers.createValues)
 router.get("/valuesList",valuesControllers.valuesList)
 router.patch("/valuesUpdate/:id",valuesControllers.valuesUpdate)
 router.get("/valuesSearch",valuesControllers.valuesSearch)

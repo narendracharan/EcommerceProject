@@ -14,7 +14,7 @@ const multerFilter=(req,file,callback)=>{
     if(file.mimetype.startsWith("image")){
         callback(null,true)
     }else{
-        callback(new Error("only image allowd",false))
+        callback(new Error("Only Image Allowd",false))
     }
 }
 

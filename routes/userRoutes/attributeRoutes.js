@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const attributeControllers = require("../../controllers/userPanel/attributeControllers");
 
-router.post("/createAttribute/:id", attributeControllers.createAttribute);
+router.post("/createAttribute", attributeControllers.createAttribute);
 router.get("/attributeList", attributeControllers.attributeList);
 router.patch("/attributeUpdate/:id", attributeControllers.attributeUpdate);
 router.get("/attributeSearch", attributeControllers.attributeSearch);

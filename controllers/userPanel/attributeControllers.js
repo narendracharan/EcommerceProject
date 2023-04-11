@@ -6,11 +6,8 @@ const values = require("../../models/userSchema/valuesSchema");
 
 const createAttribute = async (req, res) => {
   try {
-    const id = req.params.id;
     const attribute = new cateSchema(req.body);
-    const cate = await cateSchema.findOne({ category_Id: id });
     const createAttribute = await attribute.save();
-    if (cate.status == true) {
       res.status(200).json({
         error: false,
         error_code: 200,
@@ -19,13 +16,6 @@ const createAttribute = async (req, res) => {
           createAttribute,
         },
       });
-    } else if (cate.status == false) {
-      res.status(400).json({
-        error: false,
-        error_code: 400,
-        message: "Permission not allowed",
-      });
-    }
   } catch (err) {
     console.log(err);
     res.status(400).json({
@@ -42,15 +32,23 @@ const checkStatus = async (req, res) => {
     const updateStatus = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    const valuesStatus = await values.findOneAndUpdate(id, req.body, {
+      new: true,
+    });
     res.status(200).json({
-      status: "Success",
-      updateStatus,
+      error:false,
+      error_code:200,
+      message: "Success",
+      results:{
+        updateStatus,
+        valuesStatus
+      }
     });
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: err.message,
+      message:Error,
     });
   }
 };

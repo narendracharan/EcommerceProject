@@ -3,31 +3,22 @@ const category = require("../../models/userSchema/categorySchema");
 const subCategory = require("../../models/userSchema/subCategorySchema");
 const Attribute = require("../../models/userSchema/attributeSchema");
 const values = require("../../models/userSchema/valuesSchema");
+const attributeSchema = require("../../models/userSchema/attributeSchema");
 
 const subSubCategory = async (req, res) => {
   try {
-    const id = req.params.id;
     const subSubCategory = new cateSchema(req.body);
-    const cate = await cateSchema.findOne({ category_Id: id });
     const createSubSubCategory = await subSubCategory.save();
-    if (cate.status == true) {
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "Success",
-        results: {
-          createSubSubCategory,
-        },
-      });
-    } else if (cate.status == false) {
-      res.status(400).json({
-        error: true,
-        error_code: 400,
-        message: "Permission not allowed",
-      });
-    }
+
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        createSubSubCategory,
+      },
+    });
   } catch (err) {
-    console.log(err);
     res.status(400).json({
       error: true,
       error_code: 400,
@@ -42,15 +33,31 @@ const checkStatus = async (req, res) => {
     const updateStatus = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    const attributeStatus = await attributeSchema.findOneAndUpdate(
+      { subSubCategory_Id: id },
+      req.body,
+      { new: true }
+    );
+    const valuesStatus = await values.findOneAndUpdate(
+      { subSubCategory_Id: id },
+      req.body,
+      { new: true }
+    );
     res.status(200).json({
-      status: "Success",
-      updateStatus,
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        updateStatus,
+        attributeStatus,
+        valuesStatus,
+      },
     });
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: err.message,
+      message: Error,
     });
   }
 };

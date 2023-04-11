@@ -12,7 +12,7 @@ const userSignup = async (req, res) => {
     if (exit) {
       res.status(403).json({
         status: "Failed",
-        message: "userEmail already exited",
+        message: "userEmail Already Exited",
       });
     }
     const Salt = await bcrypt.genSalt(10);
@@ -22,7 +22,7 @@ const userSignup = async (req, res) => {
       from: "narendracharan25753@gmail.com",
       to: userEmail,
       subject: "Your Signup Successfully",
-      text: `this ${otp} otp verify to Email`,
+      text: `This ${otp} Otp Verify To Email`,
     };
     transporter.sendMail(mailOptions);
     const newOtpVerify = await new userSchema({
@@ -72,7 +72,7 @@ const OtpVerify = async (req, res) => {
   try {
     var { userEmail, otp } = req.body;
     if (!userEmail || !otp) {
-      throw Error("Empty otp details are not allowed");
+      throw Error("Empty Otp Details Are Not Allowed");
     } else {
       const userOtpVerify = await userSchema.find({ userEmail });
       if (userOtpVerify.length <= 0) {
@@ -80,12 +80,12 @@ const OtpVerify = async (req, res) => {
       } else {
         const { expiresAt } = userOtpVerify[0];
         if (expiresAt < Date.now()) {
-          throw Error("otp has expired. please request again");
+          throw Error("Otp Has Expired. Please Request Again");
         } else {
           res.status(200).json({
             error: false,
             error_code: 200,
-            message: "Otp Verify successFully",
+            message: "Otp Verify SuccessFully",
           });
         }
       }
@@ -185,28 +185,28 @@ const userLogin = async (req, res) => {
             res.status(400).json({
               error: true,
               error_code: 400,
-              message: "Permission Not allowed",
+              message: "Permission Not Allowed",
             });
           }
         } else {
           res.status(403).json({
             error: true,
             error_code: 403,
-            message: "user Password are incorrect",
+            message: "User Password Are Incorrect",
           });
         }
       } else {
         res.status(403).json({
           error: true,
           error_code: 403,
-          message: "user Email are incorrect",
+          message: "User Email Are Incorrect",
         });
       }
     } else {
       res.status(403).json({
         error: true,
         error_code: 403,
-        message: "user email and password are not valid",
+        message: "User Email and Password Are Not Valid",
       });
     }
   } catch (err) {
@@ -277,7 +277,7 @@ const sendUserResetPassword = async (req, res) => {
       let info = await transporter.sendMail({
         from: "narendracharan25753@gmail.com",
         to: userEmail,
-        subject: "Email send for reset password",
+        subject: "Email Send For Reset Password",
         text: `<a href=${link}></a>`,
       });
       res.status(200).json({
@@ -316,7 +316,7 @@ const resetPassword = async (req, res) => {
       if (password !== confirmPassword) {
         res.status(401).json({
           status: "Failed",
-          message: "Password or confirm_Password could not be same",
+          message: "Password Or Confirm_Password Could Not Be Same",
         });
       } else {
         const salt = await bcrypt.genSalt(10);
