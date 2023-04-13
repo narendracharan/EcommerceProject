@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   valuesName: {
-    type: String,
+    type: Array,
     require: true,
   },
   shipmentService: {
