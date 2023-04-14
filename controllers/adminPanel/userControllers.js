@@ -172,7 +172,7 @@ const userLogin = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: "3d" }
           );
-          if (status == true) {
+          if (status == "true") {
             res.status(200).json({
               error: false,
               error_code: 200,

@@ -6,39 +6,16 @@ const attribute = require("../../models/userSchema/attributeSchema");
 
 const createValues = async (req, res) => {
   try {
-    const category = await valueSchema.findOne({
-      category_Id: req.body.category_Id,
+    const values = new valueSchema(req.body);
+    const createValues = await values.save();
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        createValues,
+      },
     });
-    if (category) {
-      var addValues = [];
-      for (let i = 0; i < category.valuesName.length; i++) {
-        addValues.push(category.valuesName[i]);
-      }
-      addValues.push(req.body.valuesName);
-      const updatedData = await valueSchema.findOneAndUpdate(
-        { category_Id: req.body.category_Id },
-        { $set: { valuesName: addValues } }
-      );
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "Success",
-        results: {
-          updatedData,
-        },
-      });
-    } else {
-      const values = new valueSchema(req.body);
-      const createValues = await values.save();
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "Success",
-        results: {
-          createValues,
-        },
-      });
-    }
   } catch (err) {
     res.status(400).json({
       error: true,

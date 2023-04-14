@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const schema = new mongoose.Schema({
   valuesName: {
-    type: Array,
+    type: String,
     require: true,
   },
   shipmentService: {
@@ -33,6 +33,6 @@ const schema = new mongoose.Schema({
     ref: "attributes",
     require: true,
   },
-});
+})
 schema.set("timestamps", true);
 module.exports = mongoose.model("values", schema);
