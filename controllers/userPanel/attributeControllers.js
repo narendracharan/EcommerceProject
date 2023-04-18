@@ -179,9 +179,9 @@ const attributeUpdate = async (req, res) => {
 
 const attributeSearch = async (req, res) => {
   try {
-    const attribute = req.body.attributes;
+    const attribute = req.body.attributesName;
     const categoryData = await cateSchema.find({
-      attributes: { $regex: attribute, $options: "i" },
+      attributeName: { $regex: attribute, $options: "i" },
     });
     if (categoryData.length > 0) {
       res.status(200).json({

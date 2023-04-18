@@ -137,7 +137,7 @@ const userList = async (req, res) => {
     const totalpage = Math.ceil(count / pagesize);
     const createData = await userSchema
       .find({
-        userName: { $regex: userName, option: "i" },
+        userName: { $regex: userName, $options: "i" },
       })
       .skip(skip)
       .limit(pagesize);
@@ -151,6 +151,7 @@ const userList = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       error: true,
       error_code: 400,

@@ -142,9 +142,9 @@ const subCategoryUpdate = async (req, res) => {
 
 const subCategorySearch = async (req, res) => {
   try {
-    const subCategory = req.body.subCategory;
+    const category = req.body.subCategoryName;
     const categoryData = await cateSchema.find({
-      subCategory: { $regex: subCategory, $options: "i" },
+      subCategoryName: { $regex: category, $options: "i" },
     });
     if (categoryData.length > 0) {
       res.status(200).json({
