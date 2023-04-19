@@ -1,23 +1,22 @@
-const cateSchema = require("../../models/userSchema/subSubCategorySchema");
-const category = require("../../models/userSchema/categorySchema");
-const subCategory = require("../../models/userSchema/subCategorySchema");
-const Attribute = require("../../models/userSchema/attributeSchema");
-const values = require("../../models/userSchema/valuesSchema");
-const attributeSchema = require("../../models/userSchema/attributeSchema");
+const cateSchema = require("../../models/categorySchema/subCategorySchema");
+const category = require("../../models/categorySchema/categorySchema");
+const subSubCategory = require("../../models/categorySchema/subSubCategorySchema");
+const subSubCategorySchema = require("../../models/categorySchema/subSubCategorySchema");
+const attributeSchema=require("../../models/categorySchema/attributeSchema")
+const valuesSchema=require("../../models/categorySchema/valuesSchema")
 
-const subSubCategory = async (req, res) => {
+const subCategory = async (req, res) => {
   try {
-    const subSubCategory = new cateSchema(req.body);
-    const createSubSubCategory = await subSubCategory.save();
-
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        createSubSubCategory,
-      },
-    });
+    const subCategory = new cateSchema(req.body);
+    const createSubCategory = await subCategory.save();
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          createSubCategory,
+        },
+      });
   } catch (err) {
     res.status(400).json({
       error: true,
@@ -26,6 +25,7 @@ const subSubCategory = async (req, res) => {
     });
   }
 };
+
 
 const checkStatus = async (req, res) => {
   try {
@@ -33,47 +33,39 @@ const checkStatus = async (req, res) => {
     const updateStatus = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    const attributeStatus = await attributeSchema.findOneAndUpdate(
-      { subSubCategory_Id: id },
-      req.body,
-      { new: true }
-    );
-    const valuesStatus = await values.findOneAndUpdate(
-      { subSubCategory_Id: id },
-      req.body,
-      { new: true }
-    );
+    const subSubCategoryStatus=await subSubCategorySchema.findOneAndUpdate({subCategory_Id:id},req.body,{new:true})
+    const attributeStatus=await attributeSchema.findOneAndUpdate({subCategory_Id:id},req.body,{new:true})
+    const valuesStatus=await valuesSchema.findOneAndUpdate({subCategory_Id:id},req.body,{new:true})
     res.status(200).json({
-      error: false,
-      error_code: 200,
+      error:false,
+      error_code:200,
       message: "Success",
-      results: {
-        updateStatus,
-        attributeStatus,
-        valuesStatus,
-      },
+      results:{
+      updateStatus,
+      subSubCategoryStatus,
+      attributeStatus,
+      valuesStatus
+      }
     });
   } catch (err) {
     res.status(400).json({
       error: true,
       error_code: 400,
-      message: Error,
+      message: err.message,
     });
   }
 };
 
-const checkAttribute = async (req, res) => {
+const checkSubSubcategory = async (req, res) => {
   try {
     const id = req.params.id;
-    const checkData = await Attribute.find({ subSubCategory_Id: id });
-    const valuesData = await values.find({ subSubCategory_Id: id });
+    const checkData = await subSubCategory.find({ subCategory_Id: id });
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
         checkData,
-        valuesData,
       },
     });
   } catch (err) {
@@ -105,27 +97,7 @@ const selectCategory = async (req, res) => {
   }
 };
 
-const selectSubCategory = async (req, res) => {
-  try {
-    const subCategoryData = await subCategory.find();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        subCategoryData,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
-  }
-};
-
-const subSubCategoryList = async (req, res) => {
+const subCategoryList = async (req, res) => {
   try {
     const list = await cateSchema.find({});
     res.status(200).json({
@@ -145,10 +117,10 @@ const subSubCategoryList = async (req, res) => {
   }
 };
 
-const subSubCategoryUpdate = async (req, res) => {
+const subCategoryUpdate = async (req, res) => {
   try {
     const id = req.params.id;
-    const update = await cateSchema.findByIdAndUpdate(id, req.body, {
+    const updated = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
@@ -156,7 +128,7 @@ const subSubCategoryUpdate = async (req, res) => {
       error_code: 200,
       message: "Success",
       results: {
-        update,
+        updated,
       },
     });
   } catch (err) {
@@ -168,11 +140,11 @@ const subSubCategoryUpdate = async (req, res) => {
   }
 };
 
-const subSubCategorySearch = async (req, res) => {
+const subCategorySearch = async (req, res) => {
   try {
-    const subSubCategory = req.body.subSubCategoryName;
+    const category = req.body.subCategoryName;
     const categoryData = await cateSchema.find({
-      subSubCategoryName: { $regex: subSubCategory, $options: "i" },
+      subCategoryName: { $regex: category, $options: "i" },
     });
     if (categoryData.length > 0) {
       res.status(200).json({
@@ -200,12 +172,11 @@ const subSubCategorySearch = async (req, res) => {
 };
 
 module.exports = {
-  subSubCategory,
-  subSubCategoryList,
-  subSubCategoryUpdate,
-  subSubCategorySearch,
+  subCategory,
+  subCategoryList,
+  subCategoryUpdate,
+  subCategorySearch,
   selectCategory,
-  selectSubCategory,
-  checkAttribute,
-  checkStatus,
+  checkSubSubcategory,
+  checkStatus
 };

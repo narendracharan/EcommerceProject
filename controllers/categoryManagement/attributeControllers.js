@@ -1,22 +1,23 @@
-const valueSchema = require("../../models/userSchema/valuesSchema");
-const category = require("../../models/userSchema/categorySchema");
-const subCategory = require("../../models/userSchema/subCategorySchema");
-const subSubCategory = require("../../models/userSchema/subSubCategorySchema");
-const attribute = require("../../models/userSchema/attributeSchema");
+const cateSchema = require("../../models/categorySchema/attributeSchema");
+const category = require("../../models/categorySchema/categorySchema");
+const subCategory = require("../../models/categorySchema/subCategorySchema");
+const subSubCategory = require("../../models/categorySchema/subSubCategorySchema");
+const values = require("../../models/categorySchema/valuesSchema");
 
-const createValues = async (req, res) => {
+const createAttribute = async (req, res) => {
   try {
-    const values = new valueSchema(req.body);
-    const createValues = await values.save();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        createValues,
-      },
-    });
+    const attribute = new cateSchema(req.body);
+    const createAttribute = await attribute.save();
+      res.status(200).json({
+        error: false,
+        error_code: 200,
+        message: "Success",
+        results: {
+          createAttribute,
+        },
+      });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       error: true,
       error_code: 400,
@@ -28,15 +29,40 @@ const createValues = async (req, res) => {
 const checkStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const updateStatus = await valueSchema.findByIdAndUpdate(id, req.body, {
+    const updateStatus = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+    const valuesStatus = await values.findOneAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      error:false,
+      error_code:200,
+      message: "Success",
+      results:{
+        updateStatus,
+        valuesStatus
+      }
+    });
+  } catch (err) {
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message:Error,
+    });
+  }
+};
+
+const checkValues = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const checkData = await values.find({ attribute_Id: id });
     res.status(200).json({
       error: false,
       error_code: 200,
       message: "Success",
       results: {
-        updateStatus,
+        checkData,
       },
     });
   } catch (err) {
@@ -108,29 +134,9 @@ const selectSubSubCategory = async (req, res) => {
   }
 };
 
-const selectAttribute = async (req, res) => {
+const attributeList = async (req, res) => {
   try {
-    const attributeCategoryData = await attribute.find();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        attributeCategoryData,
-      },
-    });
-  } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
-  }
-};
-
-const valuesList = async (req, res) => {
-  try {
-    const list = await valueSchema.find({});
+    const list = await cateSchema.find({});
     res.status(200).json({
       error: false,
       error_code: 200,
@@ -148,10 +154,10 @@ const valuesList = async (req, res) => {
   }
 };
 
-const valuesUpdate = async (req, res) => {
+const attributeUpdate = async (req, res) => {
   try {
     const id = req.params.id;
-    const updateValues = await valueSchema.findByIdAndUpdate(id, req.body, {
+    const update = await cateSchema.findByIdAndUpdate(id, req.body, {
       new: true,
     });
     res.status(200).json({
@@ -159,7 +165,7 @@ const valuesUpdate = async (req, res) => {
       error_code: 200,
       message: "Success",
       results: {
-        updateValues,
+        update,
       },
     });
   } catch (err) {
@@ -171,19 +177,19 @@ const valuesUpdate = async (req, res) => {
   }
 };
 
-const valuesSearch = async (req, res) => {
+const attributeSearch = async (req, res) => {
   try {
-    const values = req.body.valuesName;
-    const valuesData = await valueSchema.find({
-      valuesName: { $regex: values, $options: "i" },
+    const attribute = req.body.attributesName;
+    const categoryData = await cateSchema.find({
+      attributeName: {  $regex: attribute, $options: "i" },
     });
-    if (valuesData.length > 0) {
+    if (categoryData.length > 0) {
       res.status(200).json({
         error: false,
         error_code: 200,
         message: "Success",
         results: {
-          valuesData,
+          categoryData,
         },
       });
     } else {
@@ -194,6 +200,7 @@ const valuesSearch = async (req, res) => {
       });
     }
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       error: true,
       error_code: 400,
@@ -203,13 +210,13 @@ const valuesSearch = async (req, res) => {
 };
 
 module.exports = {
-  createValues,
-  valuesList,
-  valuesUpdate,
-  valuesSearch,
+  createAttribute,
+  attributeList,
+  attributeUpdate,
+  attributeSearch,
   selectCategory,
   selectSubCategory,
   selectSubSubCategory,
-  selectAttribute,
-  checkStatus,
+  checkValues,
+  checkStatus
 };

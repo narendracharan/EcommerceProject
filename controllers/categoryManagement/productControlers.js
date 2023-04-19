@@ -1,4 +1,4 @@
-const productSchema = require("../../models/userSchema/productSchema");
+const productSchema = require("../../models/categorySchema/productSchema");
 
 const createProduct = async (req, res) => {
   try {

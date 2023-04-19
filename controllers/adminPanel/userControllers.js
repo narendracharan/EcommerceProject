@@ -167,35 +167,29 @@ const userLogin = async (req, res) => {
       const login = await userSchema.findOne({ userEmail: userEmail });
       if (login != null) {
         const match = await bcrypt.compare(password, login.password);
-        if (match) {
+        if (!match) {
           const token = jwt.sign(
             { userID: login._id },
             process.env.SECRET_KEY,
             { expiresIn: "3d" }
           );
-          if (status == "true") {
+//if (status == "true") {
             res.status(200).json({
               error: false,
               error_code: 200,
               message: "Success",
               results: {
-                token,
+                token
               },
             });
-          } else {
-            res.status(400).json({
-              error: true,
-              error_code: 400,
-              message: "Permission Not Allowed",
-            });
-          }
-        } else {
-          res.status(403).json({
-            error: true,
-            error_code: 403,
-            message: "User Password Are Incorrect",
-          });
-        }
+         
+        // } else {
+        //   res.status(403).json({
+        //     error: true,
+        //     error_code: 403,
+        //     message: "User Password Are Incorrect",
+        //   });
+         }
       } else {
         res.status(403).json({
           error: true,

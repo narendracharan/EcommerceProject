@@ -1,0 +1,15 @@
+const express=require("express")
+const router=express.Router()
+const valuesControllers=require("../../controllers/categoryManagement/valuesControllers")
+const authentication=require("../../middleware/userAuth")
+
+router.post("/createValues",authentication.userAuth,valuesControllers.createValues)
+router.post("/valuesList",authentication.userAuth,valuesControllers.valuesList)
+router.patch("/valuesUpdate/:id",authentication.userAuth,valuesControllers.valuesUpdate)
+router.post("/valuesSearch",authentication.userAuth,valuesControllers.valuesSearch)
+router.post("/selectCategory",authentication.userAuth,valuesControllers.selectCategory)
+router.post("/selectSubCategory",authentication.userAuth,valuesControllers.selectSubCategory)
+router.post("/selectSubSubCategory",authentication.userAuth,valuesControllers.selectSubSubCategory)
+router.post("/selectAttribute",authentication.userAuth,valuesControllers.selectAttribute)
+router.patch("/checkStatus/:id",authentication.userAuth,valuesControllers.checkStatus)
+module.exports=router
