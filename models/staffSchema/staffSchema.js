@@ -10,7 +10,7 @@ const schema=new mongoose.Schema({
         require:true
     },
     modules:{
-        type:String,
+        type:Array,
         require:true
     },
     password:{

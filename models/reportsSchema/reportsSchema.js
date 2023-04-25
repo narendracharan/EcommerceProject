@@ -1,31 +1,28 @@
 const mongoose=require("mongoose")
 
 const schema=new mongoose.Schema({
-    sellerName:{
+    reporter:{
         type:String,
         require:true
     },
-    buyerName:{
+    reporterAgainst:{
         type:String,
         require:true
     },
-    mobileNumber:{
-      type:Number,
-      require:true
-    },
-    offerType:{
+    reason:{
         type:String,
         require:true
     },
-    price:{
-        type:String,
+    user_Id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user",
         require:true
     },
     product_Id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"product" ,
+        ref:"product",
         require:true
-       }
+    }
 })
 schema.set("timestamps",true)
-module.exports=mongoose.model("order",schema)
+module.exports=mongoose.model("reports",schema)

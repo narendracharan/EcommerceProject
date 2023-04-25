@@ -173,23 +173,23 @@ const userLogin = async (req, res) => {
             process.env.SECRET_KEY,
             { expiresIn: "3d" }
           );
-//if (status == "true") {
+          if (status == "true") {
             res.status(200).json({
               error: false,
               error_code: 200,
               message: "Success",
               results: {
-                token
+                token,
               },
             });
-         
-        // } else {
-        //   res.status(403).json({
-        //     error: true,
-        //     error_code: 403,
-        //     message: "User Password Are Incorrect",
-        //   });
-         }
+          } else {
+            res.status(403).json({
+              error: true,
+              error_code: 403,
+              message: "User Password Are Incorrect",
+            });
+          }
+        }
       } else {
         res.status(403).json({
           error: true,

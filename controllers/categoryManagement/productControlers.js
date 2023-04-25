@@ -15,6 +15,7 @@ const createProduct = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       error: true,
       error_code: 400,
