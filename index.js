@@ -5,7 +5,14 @@ const app = express();
 const bodyparser = require("body-parser")
 const path=require("path");
 const commonRoutes = require("./routes/commonRoutes");
+const cors=require("cors")
+const corsoptions={
+  origin:"*",
+  credentials:true,
+  optionSuccessStatus:200
+}
 require("./models/config");
+app.use(cors(corsoptions))
 app.use(bodyparser.json());
 app.use(morgan("dev"));
 app.set("view engine","ejs")

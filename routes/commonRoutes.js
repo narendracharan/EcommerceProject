@@ -7,7 +7,8 @@ const staff=require("./staffRoutes/commonRoutes")
 const order=require("./orderRoutes/commonRoutes")
 const dashboards=require("./dashboardRoutes/commonRoutes")
 const reporter=require("./reporterRoutes/commonRoutes")
-
+const announcement=require("./announcementRoutes/commonRoutes")
+const notification=require("./notificationRoutes/commonRoutes")
 
 router.use("/user",user)
 router.use("/category",category)
@@ -16,4 +17,6 @@ router.use("/staff",staff)
 router.use("/order",order)
 router.use("/dashboards",dashboards)
 router.use("/reporter",reporter)
+router.use("/announcement",announcement)
+router.use("/notification",notification)
 module.exports=router

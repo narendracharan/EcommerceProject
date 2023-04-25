@@ -3,11 +3,10 @@ const User=require("../models/adminSchema/userSchema")
 
 
 const userAuth=async(req,res,next)=>{
-    let token;
-    const {authorization}=req.headers
-    if(authorization && authorization.startsWith("Bearer")){
+    let token=req.headers.authorization
+    if( token){
         try{
-            token=authorization.split(" ")[1]
+            token=token.split(" ")[1]
             const {userID}=jwt.verify(token,process.env.SECRET_KEY)
             req.user=await User.findById(userID).select("-password")
             next()
