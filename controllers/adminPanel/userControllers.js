@@ -3,6 +3,9 @@ const User = require("../../models/adminSchema/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { transporter } = require("../../service/mailService");
+const tokenAuthorisationUser = require("../../middleware/userAuth");
+const { success } = require("../response");
+//const auth=require("../../middleware")
 
 const userSignup = async (req, res) => {
   const user = new userSchema(req.body);
@@ -168,27 +171,19 @@ const userLogin = async (req, res) => {
       if (login != null) {
         const match = await bcrypt.compare(password, login.password);
         if (match) {
-          const token = jwt.sign(
-            { userID: login._id },
-            process.env.SECRET_KEY,
-            { expiresIn: "30d" }
-          );
-            res.status(200).json({
-              error: false,
-              error_code: 200,
-              message: "Success",
-              results: {
-                token,
-              },
-            });
-          } else {
+          const token = await login.generateUserAuthToken();
+          res
+            .header("x-auth-token-user", token)
+            .header("access-control-expose-headers", "x-auth-token-admin")
+            .status(201)
+            .json(success(res.statusCode, "Successs", { login, token }));
+        } else {
           res.status(403).json({
-           error: true,
+            error: true,
             error_code: 403,
-             message: "User Password Are Incorrect",
-            });
-          }
-        
+            message: "User Password Are Incorrect",
+          });
+        }
       } else {
         res.status(403).json({
           error: true,

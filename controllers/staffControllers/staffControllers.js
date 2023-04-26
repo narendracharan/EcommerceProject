@@ -1,8 +1,11 @@
-const staffSchema = require("../../models/staffSchema/staffSchema");
+const staffSchema = require("../../models/adminSchema/userSchema");
+const bcrypt=require("bcrypt")
 
 const createStaff = async (req, res) => {
   try {
     const staff = new staffSchema(req.body);
+    const salt=await bcrypt.genSalt(10)
+    staff.password=await bcrypt.hash(staff.password,salt)
     const saveData = await staff.save();
     res.status(200).json({
       error: false,
@@ -60,9 +63,33 @@ const staffSearch = async (req, res) => {
       res.status(200).json({
         error: true,
         error_code: 200,
-        message: Error,
+        message: "Data Not Found",
       });
     }
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({
+      error: true,
+      error_code: 400,
+      message: Error,
+    });
+  }
+};
+
+const updateStaff = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateData = await staffSchema.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+    res.status(200).json({
+      error: false,
+      error_code: 200,
+      message: "Success",
+      results: {
+        updateData,
+      },
+    });
   } catch (err) {
     res.status(400).json({
       error: true,
@@ -72,25 +99,4 @@ const staffSearch = async (req, res) => {
   }
 };
 
-const updateStaff=async(req,res)=>{
-    try{
-const id=req.params.id
-const updateData=await staffSchema.findByIdAndUpdate(id,req.body,{new:true})
-res.status(200).json({
-    error:false,
-    error_code:200,
-    message:"Success",
-    results:{
-        updateData
-    }
-})
-    }catch(err){
-        res.status(400).json({
-            error:true,
-            error_code:400,
-            message:Error
-        })
-    }
-}
-
-module.exports = { createStaff, staffList,staffSearch,updateStaff };
+module.exports = { createStaff, staffList, staffSearch, updateStaff };

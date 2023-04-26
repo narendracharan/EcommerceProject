@@ -1,4 +1,5 @@
 const mongoose=require("mongoose")
+const jwt=require("jsonwebtoken")
 
 const schema=new mongoose.Schema({
     userName:{
@@ -14,6 +15,10 @@ const schema=new mongoose.Schema({
         require:true
     },
     password:{
+        type:String,
+        require:true
+    },
+   confirm_password:{
         type:String,
         require:true
     },
@@ -33,10 +38,25 @@ const schema=new mongoose.Schema({
         type:Date,
         require:true
     },
+    staffName:{
+        type:String,
+        require:true
+    },
+    modules:{
+        type:Array,
+        require:true
+    },
     status:{
         type:Boolean,
         default:true
-    }
+    },
+    
 })
 schema.set("timestamps",true)
+schema.methods.generateUserAuthToken = function () {
+    const token = jwt.sign({ _id: this._id }, "ultra-security", {
+      expiresIn: "365d",
+    });
+    return token;
+  };
 module.exports=mongoose.model("user",schema)

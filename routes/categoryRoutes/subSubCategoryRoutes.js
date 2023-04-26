@@ -4,12 +4,12 @@ const subSubCategoryContollers=require("../../controllers/categoryManagement/sub
 const authentication=require("../../middleware/userAuth")
 
 
-router.post("/createSubSubCategory",authentication.userAuth,subSubCategoryContollers.subSubCategory)
-router.post("/subSubCategoryList",authentication.userAuth,subSubCategoryContollers.subSubCategoryList)
-router.patch("/subSubCategoryUpdate/:id",authentication.userAuth,subSubCategoryContollers.subSubCategoryUpdate)
-router.post("/subSubCategorySearch",authentication.userAuth,subSubCategoryContollers.subSubCategorySearch)
-router.post("/selectCategory",authentication.userAuth,subSubCategoryContollers.selectCategory)
-router.post("/selectSubCategory",authentication.userAuth,subSubCategoryContollers.selectSubCategory)
-router.post("/checkAttribute/:id",authentication.userAuth,subSubCategoryContollers.checkAttribute)
-router.post("/checkstatus/:id",authentication.userAuth,subSubCategoryContollers.checkStatus)
+router.post("/createSubSubCategory",authentication,subSubCategoryContollers.subSubCategory)
+router.post("/subSubCategoryList",authentication,subSubCategoryContollers.subSubCategoryList)
+router.patch("/subSubCategoryUpdate/:id",authentication,subSubCategoryContollers.subSubCategoryUpdate)
+router.post("/subSubCategorySearch",authentication,subSubCategoryContollers.subSubCategorySearch)
+router.post("/selectCategory",authentication,subSubCategoryContollers.selectCategory)
+router.post("/selectSubCategory",authentication,subSubCategoryContollers.selectSubCategory)
+router.post("/checkAttribute/:id",authentication,subSubCategoryContollers.checkAttribute)
+router.post("/checkstatus/:id",authentication,subSubCategoryContollers.checkStatus)
 module.exports=router

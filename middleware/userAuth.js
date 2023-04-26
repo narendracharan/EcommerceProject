@@ -1,26 +1,26 @@
-const jwt=require("jsonwebtoken")
-const User=require("../models/adminSchema/userSchema")
+const jwt = require("jsonwebtoken");
+const { error } = require("../controllers/response");
 
-
-const userAuth=async(req,res,next)=>{
-    let token=req.headers.authorization
-    if( token){
-        try{
-            token=token.split(" ")[1]
-            const {userID}=jwt.verify(token,process.env.SECRET_KEY)
-            req.user=await User.findById(userID).select("-password")
-            next()
-        }catch(err){
-            console.log(err);
-            res.status(401).send({status: "Failed", message: "unauthorized User" + err})
-        }
-    }if(!token){
-        res.status(400).send({
-            message: "Unauthorized User NO Token" 
-           });
-          }  
+function tokenAuthorisationUser(req, res, next) {
+  const token = req.header("x-auth-token-user");
+  if (!token)
+    return res
+      .status(401)
+      .json(error("Access Denied. No token provided.", res.statusCode));
+  try {
+    const decoded = jwt.verify(token, "ultra-security");
+    req.user = decoded;
+    next();
+  } catch (ex) {
+    return res
+      .status(400)
+      .json(error("You are not Authenticated Yet", res.statusCode));
+  }
 }
+module.exports = tokenAuthorisationUser;
 
-module.exports={
-    userAuth
-}
+
+
+
+
+

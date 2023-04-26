@@ -4,7 +4,7 @@ const announcementControllers=require("../../controllers/announcementControllers
 const { uploads } = require("../../middleware/imageStorage")
 const authentication=require("../../middleware/userAuth")
 
-router.post("/create",authentication.userAuth,uploads.single("pic"),announcementControllers.createAnnouncement)
-router.post("/search",authentication.userAuth,announcementControllers.searchAnnouncement)
-router.post("/list",authentication.userAuth,announcementControllers.announcementList)
+router.post("/create",authentication,uploads.single("pic"),announcementControllers.createAnnouncement)
+router.post("/search",authentication,announcementControllers.searchAnnouncement)
+router.post("/list",authentication,announcementControllers.announcementList)
 module.exports=router
