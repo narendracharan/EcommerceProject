@@ -4,26 +4,17 @@ const subCategory = require("../../models/categorySchema/subCategorySchema");
 const Attribute = require("../../models/categorySchema/attributeSchema");
 const values = require("../../models/categorySchema/valuesSchema");
 const attributeSchema = require("../../models/categorySchema/attributeSchema");
+const { error, success } = require("../response");
 
 const subSubCategory = async (req, res) => {
   try {
     const subSubCategory = new cateSchema(req.body);
-    const createSubSubCategory = await subSubCategory.save();
-
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        createSubSubCategory,
-      },
-    });
+    const saveSubSubCategory = await subSubCategory.save();
+    res
+      .status(200)
+      .json(success(res.statusCode, "Success", { saveSubSubCategory }));
   } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json(error("Failed", res.statusCode));
   }
 };
 
@@ -198,6 +189,7 @@ const subSubCategorySearch = async (req, res) => {
     });
   }
 };
+
 
 module.exports = {
   subSubCategory,

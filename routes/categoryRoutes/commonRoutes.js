@@ -8,7 +8,7 @@ const valuesRoutes=require("../categoryRoutes/valuesRoutes")
 
 router.use("/category", categoryRoutes);
 router.use("/subCategory", subCategoryRoutes);
-router.use("/subSubCategory", subSubCategoryRoutes);
+router.use("/subSubSubCategory",subSubCategoryRoutes)
 router.use("/attribute", attributeRoutes);
 router.use("/values",valuesRoutes)
 module.exports = router;

@@ -7,10 +7,10 @@ const createBannerOne = async (req, res) => {
     const filepath = `/uploads/${req.file.filename}`;
     banners.homeScreenOne = filepath;
     const bannersData = await banners.save();
-    res.status(201).json(success(res.statusCode, "Success", bannersData));
+    res.status(201).json(success( "Success",res.statusCode,  {bannersData}));
   } catch (err) {
     console.log(err);
-    res.status(400).json(error(res.statusCode, { Failed }));
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 const createBannerTwo = async (req, res) => {
@@ -19,10 +19,10 @@ const createBannerTwo = async (req, res) => {
       const filepath = `/uploads/${req.file.filename}`;
       banners.homeScreenTwo = filepath;
       const bannersData = await banners.save();
-      res.status(201).json(success(res.statusCode, "Success", bannersData));
+      res.status(201).json(success("Success",res.statusCode,  {bannersData}));
     } catch (err) {
       console.log(err);
-      res.status(400).json(error(res.statusCode, { Failed }));
+      res.status(400).json(error("Failed",res.statusCode));
     }
   };
   
@@ -32,10 +32,10 @@ const createBannerTwo = async (req, res) => {
       const filepath = `/uploads/${req.file.filename}`;
       banners.homeScreenThree = filepath;
       const bannersData = await banners.save();
-      res.status(201).json(success(res.statusCode, "Success", bannersData));
+      res.status(201).json(success("Success",res.statusCode,  {bannersData}));
     } catch (err) {
       console.log(err);
-      res.status(400).json(error(res.statusCode, { Failed }));
+      res.status(400).json(error("Failed",res.statusCode));
     }
   };
 
@@ -45,10 +45,10 @@ const createBannerTwo = async (req, res) => {
       const filepath = `/uploads/${req.file.filename}`;
       banners.homeScreenFour = filepath;
       const bannersData = await banners.save();
-      res.status(201).json(success(res.statusCode, "Success", bannersData));
+      res.status(201).json(success( "Success",res.statusCode, {bannersData}));
     } catch (err) {
       console.log(err);
-      res.status(400).json(error(res.statusCode, { Failed }));
+      res.status(400).json(error("Failed",res.statusCode));
     }
   };
 
@@ -58,10 +58,10 @@ const createBannerTwo = async (req, res) => {
       const filepath = `/uploads/${req.file.filename}`;
       banners.homeScreenFive = filepath;
       const bannersData = await banners.save();
-      res.status(201).json(success(res.statusCode, "Success", bannersData));
+      res.status(201).json(success("Success",res.statusCode,  {bannersData}));
     } catch (err) {
       console.log(err);
-      res.status(400).json(error(res.statusCode, { Failed }));
+      res.status(400).json(error("Failed",res.statusCode));
     }
   };
 
