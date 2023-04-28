@@ -1,4 +1,5 @@
 const announcementSchema = require("../../models/announcementSchema/announcementSchema");
+const { success, error } = require("../response");
 
 const createAnnouncement = async (req, res) => {
   try {
@@ -6,21 +7,9 @@ const createAnnouncement = async (req, res) => {
     const filepath = `/uploads/${req.file.filename}`;
     create.pic = filepath;
     const saveData = await create.save();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        saveData,
-      },
-    });
+    res.status(200).json(success(res.statusCode,"Success",{saveData}));
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 
@@ -31,47 +20,21 @@ const searchAnnouncement = async (req, res) => {
       heading: { $regex: heading, $options: "i" },
     });
     if (searchData.length > 0) {
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "Success",
-        results: {
-          searchData,
-        },
-      });
+      res.status(200).json(success(res.statusCode,"Success",{searchData}));
     } else {
-      res.status(200).json({
-        error: true,
-        error_code: 200,
-        message: "Data are Not Found",
-      });
+      res.status(200).json(error("Data are Not Found",res.statusCode));
     }
   } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: false,
-      message: Error,
-    });
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 
 const announcementList = async (req, res) => {
   try {
     const list = await announcementSchema.find({});
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        list,
-      },
-    });
+    res.status(200).json(success(res.statusCode,"Success",{list}));
   } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 

@@ -5,10 +5,12 @@ const subSubCategorySchema = require("../../models/categorySchema/subSubCategory
 const attributeSchema = require("../../models/categorySchema/attributeSchema");
 const valueSchema = require("../../models/categorySchema/valuesSchema");
 
+
 const createCategory = async (req, res) => {
   try {
     const category = new cateSchema(req.body);
-    const filepath = `/uploads/${req.file.filename}`;
+    const filepath = `/public/${req.file.filename}`;
+    console.log(req.file);
     category.categoryPic = filepath;
     const saveCategoty = await category.save();
     res.status(201).json({

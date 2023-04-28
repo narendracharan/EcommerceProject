@@ -12,7 +12,7 @@ exports.success = function (statusCode, message, results) {
     if (!findCode) statusCode = 500;
     else statusCode = findCode;
     return {
-      error: true,
+      error: true, 
       status_code: statusCode,
       message,
       results: {},

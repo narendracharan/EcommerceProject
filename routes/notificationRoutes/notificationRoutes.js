@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const notificationControllers = require("../../controllers/notificationControllers/notificationControllers");
-const authentication=require("../../middleware/userAuth")
+const tokenAuthorisationUser = require("../../middleware/userAuth");
 
-router.post("/createReport",authentication ,notificationControllers.reportNotification);
-router.post("/createCustom",authentication,notificationControllers.customNotification);
-router.post("/list",authentication,notificationControllers.notificationList)
+router.post("/createReport",tokenAuthorisationUser ,notificationControllers.reportNotification);
+router.post("/createCustom",tokenAuthorisationUser,notificationControllers.customNotification);
+router.post("/list",tokenAuthorisationUser,notificationControllers.notificationList)
 
 module.exports = router;

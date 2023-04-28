@@ -3,11 +3,11 @@ const path =require('path')
 
 const imageConfig=multer.diskStorage({
     destination:(req,res,callback)=>{
-        callback(null,path.join(__dirname,"..","/uploads"))
+        callback(null,path.join(__dirname,"..","/public"))
     },
     filename:(req,file,callback)=>{
          const exe=file.originalname.substring(file.originalname.indexOf("."))
-         callback(null,`image_${Date.now()}.${file.originalname}`)
+         callback(null,`image_${Date.now()}`+path.extname(file.originalname))
     }
 })
 const multerFilter=(req,file,callback)=>{
