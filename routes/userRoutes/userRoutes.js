@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const user = require("../../controllers/adminPanel/userControllers");
+const user = require("../../controllers/userManagement/userControllers");
 const { uploads } = require("../../middleware/imageStorage");
 const { signupValidation } = require("../../validation/userValidation");
 const tokenAuthorisationUser = require("../../middleware/userAuth");

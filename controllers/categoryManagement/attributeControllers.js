@@ -71,7 +71,7 @@ const selectSubSubCategory = async (req, res) => {
 const attributeList = async (req, res) => {
   try {
     const list = await cateSchema.find({});
-    res.status(200).json(success(res.statusCode,"Success",{subSubCategoryData}));
+    res.status(200).json(success(res.statusCode,"Success",{list}));
   } catch (err) {
     res.status(400).json(error("Failed",res.statusCode));
   }
@@ -96,21 +96,12 @@ const attributeSearch = async (req, res) => {
       attributeName: {  $regex: attribute, $options: "i" },
     });
     if (categoryData.length > 0) {
-      res.status(200).json(success());
+     return res.status(200).json(success(res.statusCode,"Success",{categoryData}));
     } else {
-      res.status(200).json({
-        error: true,
-        error_code: 200,
-        message: Error,
-      });
+      res.status(200).json(error("Data are Not Found",res.statusCode));
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 

@@ -9,7 +9,6 @@ const createBannerOne = async (req, res) => {
     const bannersData = await banners.save();
     res.status(201).json(success( "Success",res.statusCode,  {bannersData}));
   } catch (err) {
-    console.log(err);
     res.status(400).json(error("Failed",res.statusCode));
   }
 };
@@ -21,7 +20,6 @@ const createBannerTwo = async (req, res) => {
       const bannersData = await banners.save();
       res.status(201).json(success("Success",res.statusCode,  {bannersData}));
     } catch (err) {
-      console.log(err);
       res.status(400).json(error("Failed",res.statusCode));
     }
   };
@@ -60,7 +58,6 @@ const createBannerTwo = async (req, res) => {
       const bannersData = await banners.save();
       res.status(201).json(success("Success",res.statusCode,  {bannersData}));
     } catch (err) {
-      console.log(err);
       res.status(400).json(error("Failed",res.statusCode));
     }
   };

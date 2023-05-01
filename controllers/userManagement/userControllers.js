@@ -1,5 +1,5 @@
-const userSchema = require("../../models/adminSchema/userSchema");
-const User = require("../../models/adminSchema/userSchema");
+const userSchema = require("../../models/userSchema/userSchema");
+const User = require("../../models/userSchema/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { transporter } = require("../../service/mailService");
@@ -13,11 +13,11 @@ const userSignup = async (req, res) => {
   try {
     const error =  validationResult(req);
     if (!error.isEmpty()) {
-      return res.status(400).json({ errors: error.array() });
+      return res.status(422).json( { errors: error.array() });
     }
     const exit = await userSchema.findOne({ userEmail: userEmail });
     if (exit) {
-      res.status(403).json({
+    return  res.status(403).json({
         status: "Failed",
         message: "userEmail Already Exited",
       });
@@ -83,7 +83,7 @@ const OtpVerify = async (req, res) => {
 
 const editProfile = async (req, res) => {
   try {
-    const filepath = `/uploads/${req.file.filepath}`;
+    const filepath = `/${req.file.filepath}`;
     const data = {
       userName: req.body.userName,
       userEmail: req.body.userEmail,
@@ -102,7 +102,7 @@ const userList = async (req, res) => {
     var { page, pagesize } = req.body;
     var skip;
     if (page <= 1) {
-      skip = 0;
+    return  skip = 0;
     } else {
       skip = (page - 1) * pagesize;
     }
@@ -129,7 +129,7 @@ const userLogin = async (req, res) => {
         const match = await bcrypt.compare(password, login.password);
         if (match) {
           const token = await login.generateUserAuthToken();
-          res
+         return res
             .header("x-auth-token-user", token)
             .header("access-control-expose-headers", "x-auth-token-admin")
             .status(201)
@@ -188,7 +188,7 @@ const sendUserResetPassword = async (req, res) => {
         subject: "Email Send For Reset Password",
         text: `<a href=${link}></a>`,
       });
-      res.status(200).json(success(res.statusCode,"Success",{ useriD: user._id,
+   return res.status(200).json(success(res.statusCode,"Success",{ useriD: user._id,
         token,}));
     } else {
       res.status(400).json(error("Failed",res.statusCode));
@@ -207,7 +207,7 @@ const resetPassword = async (req, res) => {
     jwt.verify(token, new_secret);
     if ((password, confirmPassword)) {
       if (password !== confirmPassword) {
-        res.status(401).json(error("Password Or Confirm_Password Could Not Be Same",res.statusCode));
+      return  res.status(401).json(error("Password Or Confirm_Password Could Not Be Same",res.statusCode));
       } else {
         const salt = await bcrypt.genSalt(10);
         const new_Password = await bcrypt.hash(password, salt);

@@ -1,6 +1,6 @@
 const express=require("express")
 const router=express.Router()
-const reporterControllers=require("../../controllers/reporterControllers/reporterSchema")
+const reporterControllers=require("../../controllers/reporterControllers/reporterControllers")
 const tokenAuthorisationUser = require("../../middleware/userAuth")
 
 

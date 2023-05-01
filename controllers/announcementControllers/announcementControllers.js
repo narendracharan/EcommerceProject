@@ -20,7 +20,7 @@ const searchAnnouncement = async (req, res) => {
       heading: { $regex: heading, $options: "i" },
     });
     if (searchData.length > 0) {
-      res.status(200).json(success(res.statusCode,"Success",{searchData}));
+    return  res.status(200).json(success(res.statusCode,"Success",{searchData}));
     } else {
       res.status(200).json(error("Data are Not Found",res.statusCode));
     }

@@ -1,46 +1,24 @@
 const productSchema = require("../../models/categorySchema/productSchema");
+const { success, error } = require("../response");
 
 const createProduct = async (req, res) => {
   try {
     const product = new productSchema(req.body);
-    const filepath = `/uploads/${req.file.filename}`;
+    const filepath = `/${req.file.filename}`;
     product.product_Pic = filepath;
     const saveProduct = await product.save();
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        saveProduct,
-      },
-    });
+    res.status(200).json(success(res.statusCode,"Success",{saveProduct}));
   } catch (err) {
-    console.log(err);
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 
 const productList = async (req, res) => {
   try {
     const list = await productSchema.find({});
-    res.status(200).json({
-      error: false,
-      error_code: 200,
-      message: "Success",
-      results: {
-        list,
-      },
-    });
+    res.status(200).json(success(res.statusCode,"Success",{list}));
   } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json("Failed",res.statusCode);
   }
 };
 
@@ -51,27 +29,12 @@ const productSearch = async (req, res) => {
       productName: { $regex: product, $options: "i" },
     });
     if (productData.length > 0) {
-      res.status(200).json({
-        error: false,
-        error_code: 200,
-        message: "Success",
-        results: {
-          productData,
-        },
-      });
+     return res.status(200).json(success(res.statusCode,"Success",{productData}));
     } else {
-      res.status(200).json({
-        error: true,
-        error_code: 200,
-        message: "Product Not found",
-      });
+      res.status(200).json(error("Product Not found",res.statusCode));
     }
   } catch (err) {
-    res.status(400).json({
-      error: true,
-      error_code: 400,
-      message: Error,
-    });
+    res.status(400).json(error("Failed",res.statusCode));
   }
 };
 

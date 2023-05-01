@@ -1,6 +1,6 @@
 const express=require("express")
 const router=express.Router()
-const user=require("./adminRoutes/userRoutes")
+const user=require("./userRoutes/userRoutes")
 const category=require("./categoryRoutes/commonRoutes")
 const product=require("./categoryRoutes/productRoutes")
 const order=require("./orderRoutes/commonRoutes")

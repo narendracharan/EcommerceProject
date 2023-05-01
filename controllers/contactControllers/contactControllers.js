@@ -25,7 +25,7 @@ const contactDelete = async (req, res) => {
     const id = req.params.id;
 
     const deletData = await contactSchema.findByIdAndDelete(id);
-    res
+       res
       .status(200)
       .json(success(res.statusCode, "Success DeletedData", { deletData }));
   } catch (err) {
@@ -43,5 +43,4 @@ const contactView = async (req, res) => {
   }
 };
 
-// const contactSearch=async(req.re)
 module.exports = { createContact, contactlist, contactDelete ,contactView};
