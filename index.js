@@ -18,7 +18,7 @@ app.use(bodyparser.json());
 app.use(morgan("dev"));
 app.set("view engine","ejs")
 const staticPath=path.join(__dirname,"./public")
-app.use("/",commonRoutes);
+app.use("/",commonRoutes)
 app.use(express.static("./public"))
 
 app.listen(process.env.PORT, () => {
