@@ -1,0 +1,11 @@
+const express=require("express")
+const {  generalCoupan, restriction, coupanUsage, coupanList, coupanUpdate, deleteCoupan, coupanSearch } = require("../../../controllers/Admin_Panel/coupanControllers/coupanControllers")
+const router=express.Router()
+router.post("/create",generalCoupan)
+router.post("/restriction",restriction)
+router.post("/coupanUsage",coupanUsage)
+router.post("/list",coupanList)
+router.patch("/updateCoupan/:id",coupanUpdate)
+router.delete("/delete/:id",deleteCoupan)
+router.post("/search-coupan",coupanSearch)
+module.exports=router
