@@ -1,7 +1,7 @@
 const express=require("express")
 const router=express.Router()
-const cartsRoutes=require("./cartsRoutes")
+const wishRoutes=require("./wishRoutes")
 
-router.use("/carts",cartsRoutes)
+router.use("/wish",wishRoutes)
 
 module.exports=router

@@ -4,11 +4,12 @@ const { success, error } = require("../../response");
  exports.createProduct = async (req, res) => {
   try {
     const product = new productSchema(req.body);
-    const filepath = `/${req.file.filename}`;
+    const filepath = `/${req.files.filename}`;
     product.product_Pic = filepath;
     const saveProduct = await product.save();
     res.status(200).json(success(res.statusCode, "Success", { saveProduct }));
   } catch (err) {
+    console.log(err);
     res.status(400).json(error("Failed", res.statusCode));
   }
 };

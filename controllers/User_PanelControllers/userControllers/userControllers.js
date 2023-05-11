@@ -1,18 +1,18 @@
 const userSchema = require("../../../models/User_PanelSchema/userSchema/userSchema");
-const {  transporter } = require("../../../service/mailService");
+const { transporter } = require("../../../service/mailService");
 const { error, success } = require("../../response");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const User = require('../../../models/User_PanelSchema/userSchema/userSchema');
-const {validationResult}=require("express-validator")
+const User = require("../../../models/User_PanelSchema/userSchema/userSchema");
+const { validationResult } = require("express-validator");
 
 exports.userSignup = async (req, res) => {
   try {
     const user = new userSchema(req.body);
     const { userEmail } = req.body;
-    const error=validationResult(req)
-    if(!error.isEmpty()){
-        res.status(200).json({errors:error.array()})
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      res.status(200).json({ errors: error.array() });
     }
     const userExist = await userSchema.findOne({ userEmail: userEmail });
     if (userExist) {
@@ -113,16 +113,82 @@ exports.resetPassword = async (req, res) => {
         const createPassword = await User.findByIdAndUpdate(user._id, {
           $set: { password: newPassword },
         });
-        res
-          .status(200)
-          .json(
-            success(res.statusCode, "Password Updated Successfully", {
-              createPassword,
-            })
-          );
+        res.status(200).json(
+          success(res.statusCode, "Password Updated Successfully", {
+            createPassword,
+          })
+        );
       }
     }
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const filepath = `/${req.files.filename}`;
+    const user = new userSchema(req.body);
+    const password = await bcrypt.hash(user.password, 10);
+    const data = {
+      userName: req.body.userName,
+      userEmail: req.body.userEmail,
+      profile_Pic: filepath,
+      gender: req.body.gender,
+      birthDay: req.body.birthDay,
+      mobileNumber: req.body.mobileNumber,
+      address: req.body.address,
+      addressTwo: req.body.addressTwo,
+      country: req.body.country,
+      city: req.body.city,
+      pinCode: req.body.pinCode,
+      password: password,
+    };
+    const profile = await userSchema.findByIdAndUpdate(id, data, {
+      new: true,
+    });
+    res.status(200).json(success(res.statusCode, " Success", { profile }));
+  } catch (err) {
+    res.status(400).json(error("Failed", res.statusCode));
+  }
+};
+
+exports.aboutProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const details = await userSchema.findById(id);
+    res.status(200).json(success(res.statusCode, "Success", { details }));
+  } catch (err) {
+    res.status(400).json(error("Failed", res.statusCode));
+  }
+};
+
+exports.addNewAddress = async (req, res) => {
+  try {
+    const address = new userSchema(req.body);
+    const addressData = await address.save();
+    res.status(200).json(success(res.statusCode, "Success", { addressData }));
+  } catch (err) {
+    res.status(400).json(error("Failed", res.statusCode));
+  }
+};
+
+exports.addressList=async(req,res)=>{
+  try{
+    const list=await userSchema.find({})
+      res.status(200).json(success(res.statusCode,"Success",{list}))
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode));
+  }
+}
+
+exports.deleteAddress=async(req,res)=>{
+  try{
+    const id=req.params.id
+    const address=await userSchema.findByIdAndDelete(id)
+    res.status(200).json(success(res.statusCode,"Success",{address}))
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode))
+  }
+}

@@ -4,7 +4,7 @@ const { success, error } = require("../../response");
 exports.createAnnouncement = async (req, res) => {
   try {
     const create = new announcementSchema(req.body);
-    const filepath = `/${req.file.filename}`;
+    const filepath = `/${req.files.filename}`;
     create.pic = filepath;
     const saveData = await create.save();
     res.status(200).json(success(res.statusCode,"Success",{saveData}));

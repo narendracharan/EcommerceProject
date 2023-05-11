@@ -1,7 +1,7 @@
 const express=require("express")
 const router=express.Router()
-const cartsRoutes=require("./cartsRoutes")
 
-router.use("/carts",cartsRoutes)
+const reviewRoutes=require("./reviewRouter")
 
+router.use("/review",reviewRoutes)
 module.exports=router

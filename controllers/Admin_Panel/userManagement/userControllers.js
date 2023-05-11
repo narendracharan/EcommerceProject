@@ -82,7 +82,7 @@ exports.OtpVerify = async (req, res) => {
 
 exports.editProfile = async (req, res) => {
   try {
-    const filepath = `/${req.file.filename}`;
+    const filepath = `/${req.files.filename}`;
     const data = {
       userName: req.body.userName,
       userEmail: req.body.userEmail,

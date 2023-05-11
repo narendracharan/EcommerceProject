@@ -5,7 +5,7 @@ const tokenAuthorisationUser = require("../../../middleware/userAuth")
 const { createAnnouncement, searchAnnouncement, announcementList } = require("../../../controllers/Admin_Panel/announcementControllers/announcementControllers")
 
 
-router.post("/create",tokenAuthorisationUser,uploads.single("pic"),createAnnouncement)
+router.post("/create",tokenAuthorisationUser,createAnnouncement)
 router.post("/search",tokenAuthorisationUser,searchAnnouncement)
 router.post("/list",tokenAuthorisationUser,announcementList)
 module.exports=router
