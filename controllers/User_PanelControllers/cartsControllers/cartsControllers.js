@@ -1,6 +1,8 @@
+const { TokenExpiredError } = require("jsonwebtoken");
 const cartsSchema = require("../../../models/User_PanelSchema/cartSchema/cartsSchema");
 const cartSchema = require("../../../models/User_PanelSchema/cartSchema/cartsSchema");
 const { error, success } = require("../../response");
+const categorySchema = require("../../../models/Admin_PanelSchema/categorySchema/categorySchema");
 
 exports.addToCart = async (req, res) => {
   try {
@@ -19,7 +21,7 @@ exports.myCarts = async (req, res) => {
     const id = req.params.id;
     const quantity = req.body.quantity;
     const item = await cartSchema
-      .find({ user_Id: id })
+      .find({ product_Id: id })
       .select({ quantity: quantity, _id: 0 })
       .populate("product_Id", {
         productName: 1,
@@ -29,18 +31,35 @@ exports.myCarts = async (req, res) => {
       });
     const product = item.map(({ product_Id }) => product_Id);
     const price = product.map(({ Price }) => Price);
-    const totalPrice = price.reduce((a, b) => {
+    const Price = price.reduce((a, b) => {
       return a + b;
     });
-    const total = totalPrice * quantity;
+    const totalPrice = Price * quantity;
     res
       .status(200)
-      .json(success(res.statusCode, "Success", { totalPrice, total }));
+      .json(success(res.statusCode, "Success", { totalPrice, Price }));
   } catch (err) {
     console.log(err);
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
+
+exports.totalCarts=async(req,res)=>{
+  try{
+    const item=await categorySchema.find().populate("coupan_Id",{coupanCode:1,DiscountType:1,_id:0})
+    const coupan=item.map(({coupan_Id})=>coupan_Id)
+    const product = item.map(({ product_Id }) => product_Id);
+    const price = product.map(({ Price }) => Price);
+    const subtotal = price.reduce((a, b) => {
+      return a + b;
+    });
+   const discount=coupan.map(({DiscountType})=>DiscountType)
+   const total=subtotal-discount
+   d
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode))
+  }
+}
 
 
 exports.deleteProduct=async(req,res)=>{

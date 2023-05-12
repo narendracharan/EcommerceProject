@@ -4,7 +4,7 @@ const { error, success } = require("../../response");
 exports.createBannerOne = async (req, res) => {
   try {
     const banners = new homeSchema(req.body);
-    const filepath = `/${req.files.filename}`;
+    const filepath = `/${req.file.filename}`;
     banners.homeScreenOne = filepath;
     const bannersData = await banners.save();
     res.status(201).json(success( "Success",res.statusCode,  {bannersData}));
@@ -16,7 +16,7 @@ exports.createBannerOne = async (req, res) => {
 exports.createBannerTwo = async (req, res) => {
     try {
       const banners = new homeSchema(req.body);
-      const filepath = `/${req.files.filename}`;
+      const filepath = `/${req.file.filename}`;
       banners.homeScreenTwo = filepath;
       const bannersData = await banners.save();
       res.status(201).json(success("Success",res.statusCode,  {bannersData}));
@@ -28,7 +28,7 @@ exports.createBannerTwo = async (req, res) => {
   exports.createBannerThree = async (req, res) => {
     try {
       const banners = new homeSchema(req.body);
-      const filepath = `/${req.files.filename}`;
+      const filepath = `/${req.file.filename}`;
       banners.homeScreenThree = filepath;
       const bannersData = await banners.save();
       res.status(201).json(success("Success",res.statusCode,  {bannersData}));
@@ -41,7 +41,7 @@ exports.createBannerTwo = async (req, res) => {
   exports.createBannerFour = async (req, res) => {
     try {
       const banners = new homeSchema(req.body);
-      const filepath = `/${req.files.filename}`;
+      const filepath = `/${req.file.filename}`;
       banners.homeScreenFour = filepath;
       const bannersData = await banners.save();
       res.status(201).json(success( "Success",res.statusCode, {bannersData}));
@@ -54,7 +54,7 @@ exports.createBannerTwo = async (req, res) => {
   exports.createBannerFive = async (req, res) => {
     try {
       const banners = new homeSchema(req.body);
-      const filepath = `/${req.files.filename}`;
+      const filepath = `/${req.file.filename}`;
       banners.homeScreenFive = filepath;
       const bannersData = await banners.save();
       res.status(201).json(success("Success",res.statusCode,  {bannersData}));

@@ -164,31 +164,4 @@ exports.aboutProfile = async (req, res) => {
   }
 };
 
-exports.addNewAddress = async (req, res) => {
-  try {
-    const address = new userSchema(req.body);
-    const addressData = await address.save();
-    res.status(200).json(success(res.statusCode, "Success", { addressData }));
-  } catch (err) {
-    res.status(400).json(error("Failed", res.statusCode));
-  }
-};
 
-exports.addressList=async(req,res)=>{
-  try{
-    const list=await userSchema.find({})
-      res.status(200).json(success(res.statusCode,"Success",{list}))
-  }catch(err){
-    res.status(400).json(error("Failed",res.statusCode));
-  }
-}
-
-exports.deleteAddress=async(req,res)=>{
-  try{
-    const id=req.params.id
-    const address=await userSchema.findByIdAndDelete(id)
-    res.status(200).json(success(res.statusCode,"Success",{address}))
-  }catch(err){
-    res.status(400).json(error("Failed",res.statusCode))
-  }
-}

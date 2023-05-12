@@ -34,7 +34,7 @@ const schema=new mongoose.Schema({
         require:true
     },
     product_Pic:{
-        type:Array,
+        type:[String],
         require:true
     },
     pageTitle:{
