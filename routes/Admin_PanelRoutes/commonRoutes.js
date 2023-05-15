@@ -16,6 +16,7 @@ const thougth=require("./thougthRoutes/commonRoutes")
 const help=require("./helpRoutes/commonRoutes")
 const information=require("./informationRoutes/commonRoutes")
 const coupan=require("./coupanRoutes/commonRoutes")
+const blog=require("./blogRoutes/commonRoutes")
 
 router.use("/user",user)
 router.use("/category",category)
@@ -33,4 +34,5 @@ router.use("/thougth",thougth)
 router.use("/help",help)
 router.use("/information",information)
 router.use("/coupan",coupan)
+router.use("/blog",blog)
 module.exports=router

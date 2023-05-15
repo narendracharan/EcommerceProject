@@ -7,8 +7,8 @@ const { uploads } = require("../../../middleware/imageStorage")
 
 router.post("/signup",signupValidation,userSignup)
 router.post("/login",userLogin)
-router.post("/send-mail",sendMailResetPassword)
-router.post("/reset-password/:id/:token",resetPassword)
-router.post("/edit-profile/:id",uploads.single("profile_Pic"),updateProfile)
-router.post("/about-profile/:id",aboutProfile)
+router.post("/send-mail",tokenAuthorisationUser,sendMailResetPassword)
+router.post("/reset-password/:id/:token",tokenAuthorisationUser,resetPassword)
+router.post("/edit-profile/:id",tokenAuthorisationUser,uploads.single("profile_Pic"),updateProfile)
+router.post("/about-profile/:id",tokenAuthorisationUser,aboutProfile)
 module.exports=router

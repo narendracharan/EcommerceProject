@@ -10,9 +10,9 @@ const schema=new mongoose.Schema({
         ref:"product",
         require:true
     },
-    coupan_Id:{
+    user_Id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"coupan",
+        ref:"user",
         require:true
     }
 })

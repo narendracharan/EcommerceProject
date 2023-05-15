@@ -1,7 +1,8 @@
 const express=require("express")
 const { createReview } = require("../../../controllers/User_PanelControllers/reviewControllers/reviewControllers")
+const tokenAuthorisationUser = require("../../../middleware/userAuth")
 const router=express.Router()
 
-router.post("/add-review",createReview)
+router.post("/add-review",tokenAuthorisationUser,createReview)
 
 module.exports=router

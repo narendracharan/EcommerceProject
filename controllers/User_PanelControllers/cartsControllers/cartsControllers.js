@@ -1,8 +1,7 @@
-const { TokenExpiredError } = require("jsonwebtoken");
+const productSchema = require("../../../models/Admin_PanelSchema/categorySchema/productSchema");
 const cartsSchema = require("../../../models/User_PanelSchema/cartSchema/cartsSchema");
 const cartSchema = require("../../../models/User_PanelSchema/cartSchema/cartsSchema");
 const { error, success } = require("../../response");
-const categorySchema = require("../../../models/Admin_PanelSchema/categorySchema/categorySchema");
 
 exports.addToCart = async (req, res) => {
   try {
@@ -15,6 +14,8 @@ exports.addToCart = async (req, res) => {
     req.status(400).json(error("Failed", res.statusCode));
   }
 };
+
+
 
 exports.myCarts = async (req, res) => {
   try {
@@ -43,24 +44,6 @@ exports.myCarts = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
-
-exports.totalCarts=async(req,res)=>{
-  try{
-    const item=await categorySchema.find().populate("coupan_Id",{coupanCode:1,DiscountType:1,_id:0})
-    const coupan=item.map(({coupan_Id})=>coupan_Id)
-    const product = item.map(({ product_Id }) => product_Id);
-    const price = product.map(({ Price }) => Price);
-    const subtotal = price.reduce((a, b) => {
-      return a + b;
-    });
-   const discount=coupan.map(({DiscountType})=>DiscountType)
-   const total=subtotal-discount
-   d
-  }catch(err){
-    res.status(400).json(error("Failed",res.statusCode))
-  }
-}
-
 
 exports.deleteProduct=async(req,res)=>{
   try{

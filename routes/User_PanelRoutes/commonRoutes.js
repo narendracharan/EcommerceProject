@@ -7,6 +7,9 @@ const wishCommonRoutes=require("./wishRoutes/commonRoutes")
 const reviewCommonRoutes=require("./reviewRouter/commonRoutes")
 const categoryCommonRoutes=require("./categoryRoutes/commonRoutes")
 const addressCommonRoutes=require("./addressRoutes/commonRoutes")
+const blogCommonRoutes=require("./blogRoutes/commonRoutes")
+const saveCartsRoutes=require("./saveCartsRoutes/commonRoutes")
+const dashboardCommonRoutes=require("./dashboardRoutes/commonRoutes")
 
 router.use("/user",userRoutes)
 router.use("/product",productRoutes)
@@ -15,5 +18,8 @@ router.use("/wish",wishCommonRoutes)
 router.use("/review",reviewCommonRoutes)
 router.use("/category",categoryCommonRoutes)
 router.use("/address",addressCommonRoutes)
+router.use("/blog",blogCommonRoutes)
+router.use("/carts",saveCartsRoutes)
+router.use("/dashboards",dashboardCommonRoutes)
 
-module.exports=router
+module.exports=router   

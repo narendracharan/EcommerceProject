@@ -5,7 +5,7 @@ router.post("/create",generalCoupan)
 router.post("/restriction",restriction)
 router.post("/coupanUsage",coupanUsage)
 router.post("/list",coupanList)
-router.patch("/updateCoupan/:id",coupanUpdate)
+router.post("/updateCoupan/:id",coupanUpdate)
 router.delete("/delete/:id",deleteCoupan)
 router.post("/search-coupan",coupanSearch)
 module.exports=router
