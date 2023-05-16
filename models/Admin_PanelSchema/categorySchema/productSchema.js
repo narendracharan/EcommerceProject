@@ -57,6 +57,18 @@ const schema=new mongoose.Schema({
         type:String,
         require:true
     },
+    ratings:[
+        {
+            star:Number,
+            postedby:{type:mongoose.Schema.Types.ObjectId,
+            ref:"user"
+            }
+        }
+    ],
+    totalrating:{
+        type:String,
+        default:0
+    },
     category_Id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"category",

@@ -1,18 +1,26 @@
 const mongoose=require("mongoose")
 
 const schema=new mongoose.Schema({
-    quantity:{
-        type:Number,
-        default:1
-    },
-    product_Id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"product",
-        require:true
-    },
+    products:[
+        {
+        product_Id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"product",
+            require:true,
+            Price:Number
+        },
+        quantity:{
+            type:Number,
+            default:1
+        },
+        
+    }
+    ],
+    cartsTotal:Number,
+    totalAfterDiscount:Number,
     user_Id:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"user",
+        ref:"userPanel",
         require:true
     }
 })

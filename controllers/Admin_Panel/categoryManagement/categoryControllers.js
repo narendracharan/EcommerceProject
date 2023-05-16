@@ -10,7 +10,8 @@ const { success, error } = require("../../../controllers/response");
 exports.createCategory = async (req, res) => {
   try {
     const category = new cateSchema(req.body);
-    const filepath = `/${req.file.originalname}`;
+    console.log(req.body);
+    const filepath = `/${req.file.filename}`;
     category.categoryPic = filepath;
     console.log("==",filepath);
     const saveCategory = await category.save();

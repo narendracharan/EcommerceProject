@@ -7,7 +7,7 @@ const schema=new mongoose.Schema({
 
     },
     coupanCode:{
-        type:Number,
+        type:String,
         require:true
     },
     startdate:{
@@ -23,7 +23,7 @@ const schema=new mongoose.Schema({
         require:true
     },
     DiscountType:{
-        type:Number,
+        type:String,
         require:true
     },
     product_Id:{
@@ -53,6 +53,10 @@ const schema=new mongoose.Schema({
     limited:{
         type:Number,
         require:true
+    },
+    user_Id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user"
     }
 })
 schema.set("timestamps",true)

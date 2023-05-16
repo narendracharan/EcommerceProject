@@ -55,3 +55,40 @@ exports.compareProduct = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
+
+exports.rating=async(req,res)=>{
+  try{
+const {_id}=req.body.postedby
+const {star,product_Id}=req.body
+const product=await productSchema.findById(product_Id)
+let alreadyRated=product.ratings.find((userId)=>userId.postedby)
+if(alreadyRated){
+  const updateRating=await productSchema.updateOne(
+    {
+      ratings:{$elemMatch:alreadyRated}
+    },{
+      $set:{"ratings.$.star":star}
+    },{
+      new:true
+    }
+  )
+  return res.status(200).json(success(res.statusCode,"Success",{updateRating}))
+}else{
+  const ratedProduct=await productSchema.findByIdAndUpdate(product_Id,{
+    $push:{
+      ratings:{
+        star:star,
+        postedby:_id
+      }
+    }
+  },{
+    new:true
+  })
+  res.status(200).json(success(res.statusCode,"Success",{ratedProduct}))
+ 
+}
+}catch(err){
+  console.log(err);
+    res.status(400).json(error("Failed",res.statusCode))
+  }
+}
