@@ -1,5 +1,5 @@
 const express=require("express")
-const { userSignup, userLogin, sendMailResetPassword, resetPassword, updateProfile, aboutProfile, addNewAddress, addressList, deleteAddress } = require("../../../controllers/User_PanelControllers/userControllers/userControllers")
+const { userSignup, userLogin, sendMailResetPassword, resetPassword, updateProfile, aboutProfile, addNewAddress, addressList, deleteAddress, logOut } = require("../../../controllers/User_PanelControllers/userControllers/userControllers")
 const { signupValidation } = require("../../../validation/userValidation")
 const router=express.Router()
 const tokenAuthorisationUser=require("../../../middleware/userAuth")

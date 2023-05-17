@@ -23,7 +23,7 @@ const schema=new mongoose.Schema({
         require:true
     },
     DiscountType:{
-        type:String,
+        type:Number,
         require:true
     },
     product_Id:{
@@ -53,10 +53,6 @@ const schema=new mongoose.Schema({
     limited:{
         type:Number,
         require:true
-    },
-    user_Id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"user"
     }
 })
 schema.set("timestamps",true)

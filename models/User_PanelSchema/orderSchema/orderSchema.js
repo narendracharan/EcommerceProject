@@ -1,28 +1,43 @@
 const mongoose=require("mongoose")
 
 const schema=new mongoose.Schema({
-    product_Id:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"product",
-        require:true
-    },
+    products:[
+        {
+        product_Id:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"product",
+            require:true,
+            Price:Number
+        },
+        quantity:{
+            type:Number,
+            default:1
+        },
+        
+    }
+    ],
+    paymentIntent:{},
     orderStatus:{
         type:String,
         default:"pending",
         enum:[
-            "Not Processed",
-            "cash on delivery",
-            "Processing",
+            "Not proccess",
+            "Cash On delivery",
             "Dispatched",
-            'Cancelled',
+            "Cancelled",
             "Delivered"
         ]
     },
-    orderby:{
+    user_Id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"user",
+        require:true
+    },
+    address_Id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"address",
         require:true
     }
 })
 schema.set("timestamps",true)
-module.exports=mongoose.model("order",schema)
+module.exports=mongoose.model("userOrder",schema)

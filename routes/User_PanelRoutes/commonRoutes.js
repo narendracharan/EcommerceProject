@@ -10,6 +10,7 @@ const addressCommonRoutes=require("./addressRoutes/commonRoutes")
 const blogCommonRoutes=require("./blogRoutes/commonRoutes")
 const saveCartsRoutes=require("./saveCartsRoutes/commonRoutes")
 const dashboardCommonRoutes=require("./dashboardRoutes/commonRoutes")
+const orderCommonRoutes=require("./orderRoutes/commonRoutes")
 
 router.use("/user",userRoutes)
 router.use("/product",productRoutes)
@@ -21,5 +22,5 @@ router.use("/address",addressCommonRoutes)
 router.use("/blog",blogCommonRoutes)
 router.use("/carts",saveCartsRoutes)
 router.use("/dashboards",dashboardCommonRoutes)
-
+router.use("/order",orderCommonRoutes)
 module.exports=router   
