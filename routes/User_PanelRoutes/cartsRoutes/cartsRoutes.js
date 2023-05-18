@@ -7,5 +7,5 @@ router.post("/add-cart",tokenAuthorisationUser,addToCart)
 router.delete("/delete-product/:id",tokenAuthorisationUser,deleteProduct)
 router.post("/carts-list",tokenAuthorisationUser,cartsList)
 router.post("/apply-coupan",applyCoupan)
-router.post("/carts-summery",orderSummery)
+//router.post("/carts-summery",orderSummery)
 module.exports=router

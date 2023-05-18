@@ -25,6 +25,19 @@ const schema=new mongoose.Schema({
     mobileNumber:{
         type:String,
         require:true
+    },
+    city:{
+        type:String,
+        require:true
+    },
+    country:{
+        type:String,
+        require:true
+    },
+    user_Id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user",
+        require:true
     }
 })
 

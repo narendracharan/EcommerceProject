@@ -11,4 +11,5 @@ router.post("/send-mail",tokenAuthorisationUser,sendMailResetPassword)
 router.post("/reset-password/:id/:token",tokenAuthorisationUser,resetPassword)
 router.post("/edit-profile/:id",tokenAuthorisationUser,uploads.single("profile_Pic"),updateProfile)
 router.post("/about-profile/:id",tokenAuthorisationUser,aboutProfile)
+router.post("/logOut",tokenAuthorisationUser,logOut)
 module.exports=router

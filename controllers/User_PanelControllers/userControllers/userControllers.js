@@ -138,7 +138,7 @@ exports.updateProfile = async (req, res) => {
       gender: req.body.gender,
       birthDay: req.body.birthDay,
       mobileNumber: req.body.mobileNumber,
-      address: req.body.address,
+      address_Id: req.body.address_Id,
       addressTwo: req.body.addressTwo,
       country: req.body.country,
       city: req.body.city,
@@ -164,4 +164,19 @@ exports.aboutProfile = async (req, res) => {
   }
 };
 
-
+exports.logOut = async (req, res) => {
+  try {
+    const authHeader = req.headers["x-auth-token-user"];
+    jwt.sign(authHeader, "ultra-security", {
+      expiresIn: 1,
+    }, (logout, err) => {
+      if (logout) {
+        res.status(200).json(success(res.statusCode, "Successfully Logout "));
+      } else {
+        res.status(400).json(error("Failed", res.statusCode, { err }));
+      }
+    });
+  } catch (err) {
+    res.status(400).json(error("Failed", res.statusCode));
+  }
+};

@@ -63,6 +63,7 @@ const {star,product_Id}=req.body
 const product=await productSchema.findById(product_Id)
 let alreadyRated=product.ratings.find((userId)=>userId.postedby)
 if(alreadyRated){
+  const total=0
   const updateRating=await productSchema.updateOne(
     {
       ratings:{$elemMatch:alreadyRated}
@@ -72,8 +73,13 @@ if(alreadyRated){
       new:true
     }
   )
+  for(let i=0;i<updateRating.length;i++){
+    total=total+updateRating[i]
+  }
+  console.log(total);
   return res.status(200).json(success(res.statusCode,"Success",{updateRating}))
 }else{
+  let totalrating=0
   const ratedProduct=await productSchema.findByIdAndUpdate(product_Id,{
     $push:{
       ratings:{
@@ -84,8 +90,13 @@ if(alreadyRated){
   },{
     new:true
   })
-  res.status(200).json(success(res.statusCode,"Success",{ratedProduct}))
- 
+  for(let i=0;i<ratedProduct.ratings.length;i++){
+    totalrating=totalrating+ratedProduct.ratings[i].star
+  }
+  let newrating= await new productSchema({
+    totalrating
+  }).save()
+  res.status(200).json(success(res.statusCode,"Success",{ratedProduct,newrating}))
 }
 }catch(err){
   console.log(err);

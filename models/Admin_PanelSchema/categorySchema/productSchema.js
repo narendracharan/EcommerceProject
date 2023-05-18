@@ -66,7 +66,7 @@ const schema=new mongoose.Schema({
         }
     ],
     totalrating:{
-        type:String,
+        type:Number,
         default:0
     },
     category_Id:{

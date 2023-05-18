@@ -38,18 +38,15 @@ const schema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  country: {
-    type: String,
-    require: true,
+  address_Id:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"address",
+    require:true
   },
-  city: {
-    type: String,
-    require: true,
-  },
-  pinCode: {
-    type: String,
-    require: true,
-  },
+  status:{
+    type:Boolean,
+    default:true
+  }
 });
 schema.set("timestamps", true);
 schema.methods.generateUserAuthToken = function () {

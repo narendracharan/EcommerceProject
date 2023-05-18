@@ -17,6 +17,10 @@ const schema=new mongoose.Schema({
         type:String,
         require:true
     },
+    rating:{
+        type:Number,
+        require:true
+    },
     comment:{
         type:String,
         require:true
@@ -24,6 +28,11 @@ const schema=new mongoose.Schema({
     product_Id:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"product_Id",
+        require:true
+    },
+    user_Id:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"user",
         require:true
     }
 })

@@ -5,7 +5,10 @@ const jwt = require("jsonwebtoken");
 const { transporter } = require("../../../service/mailService");
 const { success, error } = require("../../response");
 const { validationResult } = require("express-validator");
-
+const Userschema=require("../../../models/User_PanelSchema/userSchema/userSchema");
+const productSchema = require("../../../models/Admin_PanelSchema/categorySchema/productSchema");
+const orderSchema = require("../../../models/User_PanelSchema/orderSchema/orderSchema");
+const reviewSchema = require("../../../models/User_PanelSchema/reviewSchema/reviewSchema");
 
 exports.userSignup = async (req, res) => {
   const user = new userSchema(req.body);
@@ -105,9 +108,9 @@ exports.userList = async (req, res) => {
     } else {
       skip = (page - 1) * pagesize;
     }
-    const count = await userSchema.count();
+    const count = await Userschema.count();
     const totalpage = Math.ceil(count / pagesize);
-    const createData = await userSchema
+    const createData = await Userschema
       .find({
         userName: { $regex: userName, $options: "i" },
       })
@@ -147,31 +150,23 @@ exports.userLogin = async (req, res) => {
   }
 };
 
-exports.createUser = async (req, res) => {
-  try {
-    const User = new userSchema(req.body);
-    const createUser = await User.save();
-    res.status(201).json(success(res.statusCode,"Success",{createUser}));
-  } catch (err) {
-    res.status(400).json(error("Failed",res.statusCode));
-  }
-};
 
 exports.userDetails = async (req, res) => {
   try {
-    const id = req.params.id;
-    const list = await userSchema.findById(id, {
+    const id= req.params.id
+    const list = await Userschema.findById(id, {
       _id: 0,
-      userName: 1,
-      mobileNumber: 1,
-      dateOfBirth: 1,
-      createdAt: 1,
-    });
+     userName:1,
+     userEmail:1,
+     birthDay:1,
+     status:1,
+     gender:1
+    }).populate("address_Id",{address:1,pinCode:1,mobileNumber:1,city:1,country:1})
     res.status(200).json(success(res.statusCode,"Success",{list}));
   } catch (err) {
     res.status(400).json(error("Failed",res.statusCode));
   }
-};
+}
 
 exports.sendUserResetPassword = async (req, res) => {
   try {

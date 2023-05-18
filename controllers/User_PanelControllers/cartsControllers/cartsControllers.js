@@ -12,7 +12,7 @@ exports.addToCart = async (req, res) => {
     const { _id } = req.user;
     let products = [];
     const user = await userSchema.findById(_id);
-    const alreadyExitedCart = await cartSchema.findOne({ user_Id: user._id });
+    //const alreadyExitedCart = await cartSchema.findOne({ user_Id: user._id });
 
     for (let i = 0; i < carts.length; i++) {
       let object = {};
@@ -22,7 +22,6 @@ exports.addToCart = async (req, res) => {
         .findById(carts[i].product_Id)
         .select("Price")
         .exec();
-      console.log(getPrice);
       object.Price = getPrice.Price;
       products.push(object);
     }
@@ -104,7 +103,7 @@ exports.orderSummery = async (req, res) => {
       subtotal = subtotal + cartsTotal[i];
     }
     const shipping = 40;
-    const Tax = 30;
+    const Tax = 30; 
     var cartsTotalSum = subtotal - DiscountType / 100 + shipping + Tax;
     const product = await cartSchema.find({}).populate("products.product_Id");
     res
