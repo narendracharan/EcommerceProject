@@ -180,3 +180,45 @@ exports.logOut = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
+
+
+exports.userResetPassword=async(req,res)=>{
+  try{
+const id=req.params.id
+const { password, confirm_Password } = req.body;
+const user = await User.findById(id);
+if ((password, confirm_Password)) {
+  if (password != confirm_Password) {
+    res.status(400).json(error("Password Not Match", res.statusCode));
+  } else {
+    const newPassword = await bcrypt.hash(password, 10);
+    const createPassword = await User.findByIdAndUpdate(user.id, {
+      $set: { password: newPassword },
+    });
+    res.status(200).json(
+      success(res.statusCode, "Password Updated Successfully", {
+        createPassword,
+      })
+    );
+  }
+}
+  }catch(err){
+    console.log(err);
+    res.status(400).json(error("Failed",res.status))
+  }
+}
+
+
+exports.verifyEmail=async(req,res)=>{
+  try{
+const {userEmail}=req.body
+const verifyEmail=await userSchema.findOne({userEmail:userEmail})
+if(verifyEmail){
+  res.status(200).json(success(res.statusCode,"Success",{verifyEmail}))
+}else{
+  res.status(400).json(error("Invalid userEmail",res.statusCode))
+}
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode))
+  }
+}

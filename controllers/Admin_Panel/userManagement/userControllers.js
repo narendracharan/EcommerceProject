@@ -6,9 +6,6 @@ const { transporter } = require("../../../service/mailService");
 const { success, error } = require("../../response");
 const { validationResult } = require("express-validator");
 const Userschema=require("../../../models/User_PanelSchema/userSchema/userSchema");
-const productSchema = require("../../../models/Admin_PanelSchema/categorySchema/productSchema");
-const orderSchema = require("../../../models/User_PanelSchema/orderSchema/orderSchema");
-const reviewSchema = require("../../../models/User_PanelSchema/reviewSchema/reviewSchema");
 
 exports.userSignup = async (req, res) => {
   const user = new userSchema(req.body);
@@ -175,7 +172,7 @@ exports.sendUserResetPassword = async (req, res) => {
     if (user) {
       const secret = user._id + process.env.SECRET_KEY;
       const token = jwt.sign({ userID: user._id }, secret, { expiresIn: "3d" });
-      const link = `http://127.0.0.1:3000/api/user/reset${user._id}/${token}}`;
+      const link = `http://localhost:3000/changePassword${user._id}/${token}}`;
       let info = await transporter.sendMail({
         from: "narendracharan25753@gmail.com",
         to: userEmail,

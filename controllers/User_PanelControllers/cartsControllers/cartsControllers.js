@@ -76,7 +76,7 @@ exports.applyCoupan = async (req, res) => {
     for (let i = 0; i < cartsTotal.length; i++) {
       subtotal = subtotal + cartsTotal[i];
     }
-    var cartsTotalSum = subtotal - DiscountType / 100;
+    var cartsTotalSum = subtotal - DiscountType / 10;
     res
       .status(200)
       .json(

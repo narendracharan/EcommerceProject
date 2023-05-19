@@ -46,6 +46,10 @@ const schema = new mongoose.Schema({
   status:{
     type:Boolean,
     default:true
+  },
+  otp:{
+    type:String,
+    require:true
   }
 });
 schema.set("timestamps", true);
