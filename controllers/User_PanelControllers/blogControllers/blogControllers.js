@@ -27,7 +27,6 @@ exports.blogSearch = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
-
 exports.blogComment = async (req, res) => {
   try {
     const comments = new commentSchema(req.body);
@@ -37,7 +36,6 @@ exports.blogComment = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
-
 exports.commnetsList = async (req, res) => {
   try {
     const list = await commentSchema.find({});

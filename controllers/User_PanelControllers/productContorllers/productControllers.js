@@ -14,6 +14,9 @@ exports.productDetails = async (req, res) => {
   try {
     const id = req.params.id;
     const details = await productSchema.findById(id);
+   if(details.stockQuantity==0){
+    res.status(400).json(error("Product Out of Stock", res.statusCode));
+   }
     res.status(200).json(success(res.statusCode, "Success", { details }));
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
@@ -107,6 +110,16 @@ exports.descendingProduct=async(req,res)=>{
   }catch(err){
     res.status(400).json(error("Failed",res.statusCode))
     }
+}
+
+
+exports.trandingProduct=async(req,res)=>{
+  try{
+const productlist= await productSchema.find({}).sort({productName:-1}).limit(4)
+    res.status(200).json(success(res.statusCode,"Success",{productlist}))
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode))
+  }
 }
 // exports.rating=async(req,res)=>{
 //   try{

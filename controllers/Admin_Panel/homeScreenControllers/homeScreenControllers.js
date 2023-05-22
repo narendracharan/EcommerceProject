@@ -63,3 +63,12 @@ exports.createBannerTwo = async (req, res) => {
     }
   };
 
+exports.DisplayOne=async(req,res)=>{
+  try{
+const id=req.params.id
+const banners=await homeSchema.findById(id)
+res.status(201).json(success("Success",res.statusCode,  {banners}))
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode))
+  }
+}
