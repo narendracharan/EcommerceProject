@@ -1,5 +1,5 @@
 const express=require("express")
-const { createReview } = require("../../../controllers/User_PanelControllers/reviewControllers/reviewControllers")
+const { createReview, getReview } = require("../../../controllers/User_PanelControllers/reviewControllers/reviewControllers")
 const tokenAuthorisationUser = require("../../../middleware/userAuth")
 const router=express.Router()
 

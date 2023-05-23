@@ -6,7 +6,6 @@ const bodyparser = require("body-parser")
 const path=require("path");
 const commonRoutes = require("./routes/commonRoutes");
 const cors=require("cors")
-
 const corsoptions={
   origin:"*",
   credentials:true,

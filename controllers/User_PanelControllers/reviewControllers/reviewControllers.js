@@ -10,3 +10,4 @@ res.status(201).json(success(res.statusCode,"Success",{reviewData}))
     res.status(400).json(error("Failed",res.statusCode))
     }
 }
+

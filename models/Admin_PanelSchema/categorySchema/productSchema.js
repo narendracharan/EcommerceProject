@@ -25,6 +25,18 @@ const schema=new mongoose.Schema({
         type:Number,
         require:true
     },
+    totalRating:{
+        type:Number,
+        default:0
+    },
+    ratings:[
+        {
+            star:Number,
+            postedby:{type:mongoose.Schema.Types.ObjectId,
+            ref:"user",
+        require:true}
+        }
+    ],
     SKU:{
         type:String,
         require:true
@@ -47,6 +59,10 @@ const schema=new mongoose.Schema({
     },
     visibility:{
         type:String,
+        require:true
+    },
+    Discount:{
+        type:Number,
         require:true
     },
     publishDate:{
