@@ -12,31 +12,34 @@ exports.addToCart = async (req, res) => {
     const { _id } = req.user;
     let products = [];
     const user = await userSchema.findById(_id);
-    //const alreadyExitedCart = await cartSchema.findOne({ user_Id: user._id });
+    const prod=await productSchema.findOne()
+    if(prod.stockQuantity==0){
 
-    for (let i = 0; i < carts.length; i++) {
-      let object = {};
-      object.product_Id = carts[i].product_Id;
-      object.quantity = carts[i].quantity;
-      let getPrice = await productSchema
-        .findById(carts[i].product_Id)
-        .select("Price")
-        .exec();
-      object.Price = getPrice.Price;
-      products.push(object);
+      for (let i = 0; i < carts.length; i++) {
+        let object = {};
+        object.product_Id = carts[i].product_Id;
+        object.quantity = carts[i].quantity;
+        let getPrice = await productSchema
+          .findById(carts[i].product_Id)
+          .select("Price")
+          .exec();
+        object.Price = getPrice.Price;
+        products.push(object);
+      }
+      let cartsTotal = 0;
+      for (let i = 0; i < products.length; i++) {
+        cartsTotal = cartsTotal + products[i].Price * products[i].quantity;
+      }
+      let newCarts = await new cartSchema({
+        products,
+        cartsTotal,
+        user_Id: user?._id,
+      }).save();
+      res.status(200).json(success(res.status, "Success", { newCarts }));
+    }else{
+      res.status(200).json(error( "Product Out Of Stock",res.statusCode));
     }
-    let cartsTotal = 0;
-    for (let i = 0; i < products.length; i++) {
-      cartsTotal = cartsTotal + products[i].Price * products[i].quantity;
-    }
-    let newCarts = await new cartSchema({
-      products,
-      cartsTotal,
-      user_Id: user?._id,
-    }).save();
-    res.status(200).json(success(res.status, "Success", { newCarts }));
   } catch (err) {
-    console.log(err);
     res.status(400).json(error("Failed", res.statusCode));
   }
 };

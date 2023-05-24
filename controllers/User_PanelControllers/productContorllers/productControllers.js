@@ -51,15 +51,7 @@ exports.relatedProduct = async (req, res) => {
   }
 };
 
-exports.compareProduct = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const reletedData = await productSchema.find({ category_Id: id }).limit(3);
-    res.status(200).json(success(res.statusCode, "Success", { reletedData }));
-  } catch (err) {
-    res.status(400).json(error("Failed", res.statusCode));
-  }
-};
+
 
 exports.filterPrice = async (req, res) => {
   try {
@@ -139,7 +131,7 @@ exports.productDiscount = async (req, res) => {
     if (Discount) {
       quearyObjetct.Discount = Discount;
     }
-    const productData = await productSchema.find(quearyObjetct);
+    const productData = await productSchema.find(quearyObjetct)
     res.status(200).json(success(res.statusCode, "Success", { productData }));
   } catch (err) {
     console.log(err);

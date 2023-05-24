@@ -11,6 +11,8 @@ const blogCommonRoutes=require("./blogRoutes/commonRoutes")
 const saveCartsRoutes=require("./saveCartsRoutes/commonRoutes")
 const dashboardCommonRoutes=require("./dashboardRoutes/commonRoutes")
 const orderCommonRoutes=require("./orderRoutes/commonRoutes")
+const contactCommonRoutes=require("./contactRoutes/commonRoutes")
+const compareCommonRoutes=require("./compareRoutes/commonRoutes")
 
 router.use("/user",userRoutes)
 router.use("/product",productRoutes)
@@ -23,4 +25,7 @@ router.use("/blog",blogCommonRoutes)
 router.use("/carts",saveCartsRoutes)
 router.use("/dashboards",dashboardCommonRoutes)
 router.use("/order",orderCommonRoutes)
+router.use("/contact",contactCommonRoutes)
+router.use("/compare",compareCommonRoutes)
+
 module.exports=router   

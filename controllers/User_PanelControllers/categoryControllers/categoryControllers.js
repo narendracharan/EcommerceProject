@@ -52,3 +52,12 @@ exports.searchCategory =async(req,res)=>{
   }
 
 }
+
+exports.topCategory=async(req,res)=>{
+  try{
+const categoryData=await categorySchema.find({}).sort({createdAt:-1})
+res.status(200).json(success(res.statusCode,"Success",{categoryData}))
+  }catch(err){
+    res.status(400).json(error("Failed",res.statusCode))
+  }
+}

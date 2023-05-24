@@ -8,7 +8,7 @@ const { error, success } = require("../../response")
 
 exports.createOrder=async(req,res)=>{
   try{
-const {user_Id,address_Id,taxPrice,shippingPrice}= req.body
+const {user_Id,address_Id,taxPrice,shippingPrice,orderStatus}= req.body
 const { carts } = req.body;
 const val = await coupanSchema.find({});
 let products = [];
@@ -34,7 +34,8 @@ let products = [];
              user_Id,
              address_Id,
              taxPrice,
-             shippingPrice
+             shippingPrice,
+             orderStatus
           }).save();
           res.status(200).json(success(res.status, "Success", { newCarts }));
   }catch(err){

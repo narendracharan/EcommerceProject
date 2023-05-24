@@ -1,14 +1,16 @@
-const userSchema = require("../../../models/Admin_PanelSchema/userSchema/userSchema");
 const orderSchema = require("../../../models/Admin_PanelSchema/orderSchema/orderSchema");
+const UserorderSchema=require("../../../models/User_PanelSchema/orderSchema/orderSchema");
+const userSchema = require("../../../models/User_PanelSchema/userSchema/userSchema");
 const { success, error } = require("../../response");
 
 exports.userCount = async (req, res) => {
   try {
-    const userCount = await userSchema.count();
-    const orderCount = await orderSchema.count();
+    const userCount = await userSchema.find().count()
+    const orderCount = await UserorderSchema.find().count()
     res.status(200).json(success(res.statusCode,"Success",{userCount,
       orderCount,}));
   } catch (err) {
+    console.log(err);
     res.status(400).json(error("Failed",res.statusCode));
   }
 };

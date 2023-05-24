@@ -20,8 +20,16 @@ const schema=new mongoose.Schema({
     message:{
         type:String,
         require:true
+    },
+    longitude:{
+        type:Number,
+        require:true
+    },
+    latitude:{
+        type:Number,
+        require:true
     }
 
 })
 schema.set("timestamps",true)
-module.exports=mongoose.model("contact",schema)
+module.exports=mongoose.model("userContact",schema)
