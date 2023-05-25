@@ -7,6 +7,7 @@ const { success, error } = require("../../response");
 const { validationResult } = require("express-validator");
 const Userschema=require("../../../models/User_PanelSchema/userSchema/userSchema");
 const orderSchema = require("../../../models/User_PanelSchema/orderSchema/orderSchema");
+const reviewSchema = require("../../../models/User_PanelSchema/reviewSchema/reviewSchema");
 
 exports.userSignup = async (req, res) => {
   const user = new userSchema(req.body);
@@ -160,8 +161,9 @@ exports.userDetails = async (req, res) => {
      status:1,
      gender:1
     }).populate("address_Id",{address:1,pinCode:1,mobileNumber:1,city:1,country:1})
-    const order=await orderSchema.findOne({user_Id:id})
-    res.status(200).json(success(res.statusCode,"Success",{list,order}));
+    const order=await orderSchema.find({user_Id:id})
+    const review=await reviewSchema.find({user_Id:id})
+    res.status(200).json(success(res.statusCode,"Success",{list,order,review}));
   } catch (err) {
     res.status(400).json(error("Failed",res.statusCode));
   }

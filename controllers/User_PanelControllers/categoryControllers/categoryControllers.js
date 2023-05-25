@@ -24,40 +24,40 @@ exports.subCatagoryList = async (req, res) => {
   }
 };
 
-
-exports.checkCategoryProduct=async(req,res)=>{
-  try{
-const id=req.params.id
-const productList=await productSchema.find({category_Id:id})
-res.status(200).json(success(res.statusCode,"Success",{productList}))
-  }catch(err){
+exports.checkCategoryProduct = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const productList = await productSchema.find({ category_Id: id });
+    res.status(200).json(success(res.statusCode, "Success", { productList }));
+  } catch (err) {
     console.log(err);
-    res.status(400).json(error("Failed",res.statusCode))
+    res.status(400).json(error("Failed", res.statusCode));
   }
-}
+};
 
-exports.searchCategory =async(req,res)=>{
+exports.searchCategory = async (req, res) => {
   try {
     const category = req.body.categoryName;
     const categoryData = await categorySchema.find({
       categoryName: { $regex: category, $options: "i" },
     });
     if (categoryData.length > 0) {
-     return res.status(200).json(success(res.statusCode,"Success",{categoryData}));
+      return res
+        .status(200)
+        .json(success(res.statusCode, "Success", { categoryData }));
     } else {
-      res.status(200).json(error("Data are Not Found",res.statusCode));
+      res.status(200).json(error("Data are Not Found", res.statusCode));
     }
   } catch (err) {
-    res.status(400).json(error("Failed",res.statusCode));
+    res.status(400).json(error("Failed", res.statusCode));
   }
+};
 
-}
-
-exports.topCategory=async(req,res)=>{
-  try{
-const categoryData=await categorySchema.find({}).sort({createdAt:-1})
-res.status(200).json(success(res.statusCode,"Success",{categoryData}))
-  }catch(err){
-    res.status(400).json(error("Failed",res.statusCode))
+exports.topCategory = async (req, res) => {
+  try {
+    const categoryData = await categorySchema.find({}).sort({ createdAt: -1 });
+    res.status(200).json(success(res.statusCode, "Success", { categoryData }));
+  } catch (err) {
+    res.status(400).json(error("Failed", res.statusCode));
   }
-}
+};

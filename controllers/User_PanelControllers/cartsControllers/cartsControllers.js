@@ -12,9 +12,8 @@ exports.addToCart = async (req, res) => {
     const { _id } = req.user;
     let products = [];
     const user = await userSchema.findById(_id);
-    const prod=await productSchema.findOne()
-    if(prod.stockQuantity==0){
-
+    const prod = await productSchema.findOne();
+    if (prod.stockQuantity == 0) {
       for (let i = 0; i < carts.length; i++) {
         let object = {};
         object.product_Id = carts[i].product_Id;
@@ -36,8 +35,8 @@ exports.addToCart = async (req, res) => {
         user_Id: user?._id,
       }).save();
       res.status(200).json(success(res.status, "Success", { newCarts }));
-    }else{
-      res.status(200).json(error( "Product Out Of Stock",res.statusCode));
+    } else {
+      res.status(200).json(error("Product Out Of Stock", res.statusCode));
     }
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
@@ -64,6 +63,15 @@ exports.cartsList = async (req, res) => {
   }
 };
 
+exports.cartCount = async (req, res) => {
+  try {
+    const count = await cartSchema.find({}).count();
+    res.status(200).json(success(res.statusCode, "Success", { count }));
+  } catch (err) {
+    res.status(400).json(error("Failed", res.statusCode));
+  }
+};
+
 exports.applyCoupan = async (req, res) => {
   try {
     const coupanCode = req.body.coupanCode;
@@ -80,15 +88,13 @@ exports.applyCoupan = async (req, res) => {
       subtotal = subtotal + cartsTotal[i];
     }
     var cartsTotalSum = subtotal - DiscountType / 10;
-    res
-      .status(200)
-      .json(
-        success(res.statusCode, "Success", {
-          DiscountType,
-          subtotal,
-          cartsTotalSum,
-        })
-      );
+    res.status(200).json(
+      success(res.statusCode, "Success", {
+        DiscountType,
+        subtotal,
+        cartsTotalSum,
+      })
+    );
   } catch (err) {
     console.log(err);
     res.status(400).json(error("Failed", res.statusCode));
@@ -106,21 +112,19 @@ exports.orderSummery = async (req, res) => {
       subtotal = subtotal + cartsTotal[i];
     }
     const shipping = 40;
-    const Tax = 30; 
+    const Tax = 30;
     var cartsTotalSum = subtotal - DiscountType / 100 + shipping + Tax;
     const product = await cartSchema.find({}).populate("products.product_Id");
-    res
-      .status(200)
-      .json(
-        success(res.statusCode, "Success", {
-          product,
-          subtotal,
-          shipping,
-          Tax,
-          DiscountType,
-          cartsTotalSum,
-        })
-      );
+    res.status(200).json(
+      success(res.statusCode, "Success", {
+        product,
+        subtotal,
+        shipping,
+        Tax,
+        DiscountType,
+        cartsTotalSum,
+      })
+    );
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
   }

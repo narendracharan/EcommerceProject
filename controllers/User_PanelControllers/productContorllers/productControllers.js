@@ -1,4 +1,3 @@
-const { MongooseError } = require("mongoose");
 const productSchema = require("../../../models/Admin_PanelSchema/categorySchema/productSchema");
 const reviewSchema = require("../../../models/User_PanelSchema/reviewSchema/reviewSchema");
 const { error, success } = require("../../response");
@@ -19,7 +18,8 @@ exports.productDetails = async (req, res) => {
     if (details.stockQuantity == 0) {
       res.status(400).json(error("Product Out of Stock", res.statusCode));
     }
-    res.status(200).json(success(res.statusCode, "Success", { details }));
+    const reviewCount=await reviewSchema.find({product_Id:id}).count()
+    res.status(200).json(success(res.statusCode, "Success", { details,reviewCount }));
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
   }
@@ -154,6 +154,7 @@ exports.ratingProduct = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
+
 
 exports.rating = async (req, res) => {
   try {

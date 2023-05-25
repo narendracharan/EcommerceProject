@@ -1,5 +1,5 @@
 const express=require("express")
-const { productSearch, productList, productDetails, relatedProduct, rating, filterPrice, lowPrice, highPrice, asendingProduct, descendingProduct, trandingProduct, getReview, productDiscount, ratingProduct, highDiscount } = require("../../../controllers/User_PanelControllers/productContorllers/productControllers")
+const { productSearch, productList, productDetails, relatedProduct, rating, filterPrice, lowPrice, highPrice, asendingProduct, descendingProduct, trandingProduct, getReview, productDiscount, ratingProduct, highDiscount, catrgoryProductSearch } = require("../../../controllers/User_PanelControllers/productContorllers/productControllers")
 const tokenAuthorisationUser = require("../../../middleware/userAuth")
 const router=express.Router()
 
@@ -17,5 +17,6 @@ router.post("/tranding-product",tokenAuthorisationUser,trandingProduct)
 router.post("/review",tokenAuthorisationUser,productDiscount)
 router.post("/rating-product",tokenAuthorisationUser,ratingProduct)
 router.post("/high-Discount-list",tokenAuthorisationUser,highDiscount)
+
 
 module.exports=router
