@@ -12,8 +12,8 @@ exports.addToCart = async (req, res) => {
     const { _id } = req.user;
     let products = [];
     const user = await userSchema.findById(_id);
-    const prod = await productSchema.findOne();
-    if (prod.stockQuantity == 0) {
+    const prod = await productSchema.findOne({});
+   if (prod.stockQuantity == 0) {
       for (let i = 0; i < carts.length; i++) {
         let object = {};
         object.product_Id = carts[i].product_Id;
@@ -35,7 +35,7 @@ exports.addToCart = async (req, res) => {
         user_Id: user?._id,
       }).save();
       res.status(200).json(success(res.status, "Success", { newCarts }));
-    } else {
+   } else {
       res.status(200).json(error("Product Out Of Stock", res.statusCode));
     }
   } catch (err) {
@@ -46,9 +46,10 @@ exports.addToCart = async (req, res) => {
 exports.deleteProduct = async (req, res) => {
   try {
     const id = req.params.id;
-    const item = await cartSchema.findByIdAndDelete(id);
+    const item = await cartsSchema.findOneAndDelete(id)
     res.status(200).json(success(res.statusCode, "Success", { item }));
   } catch (err) {
+    console.log(err);
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
@@ -62,7 +63,7 @@ exports.cartsList = async (req, res) => {
     res.status(400).json(error("Failed", res.statusCode));
   }
 };
-
+  
 exports.cartCount = async (req, res) => {
   try {
     const count = await cartSchema.find({}).count();

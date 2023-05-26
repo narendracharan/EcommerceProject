@@ -87,7 +87,7 @@ exports.highPrice = async (req, res) => {
 
 exports.asendingProduct = async (req, res) => {
   try {
-    const productList = await productSchema.find({}).sort({ productName: -1 });
+    const productList = await productSchema.find({}).sort({ createdAt: -1 });
     res.status(200).json(success(res.statusCode, "Success", { productList }));
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
@@ -96,7 +96,7 @@ exports.asendingProduct = async (req, res) => {
 
 exports.descendingProduct = async (req, res) => {
   try {
-    const productList = await productSchema.find({}).sort({ productName: 1 });
+    const productList = await productSchema.find({}).sort({ createdAt: 1 });
     res.status(200).json(success(res.statusCode, "Success", { productList }));
   } catch (err) {
     res.status(400).json(error("Failed", res.statusCode));
@@ -198,7 +198,7 @@ exports.rating = async (req, res) => {
         totalRating,
         ralatedProduct,
       }).save();
-      res
+      res 
         .status(200)
         .json(
           success(res.statusCode, "Success", { ralatedProduct, newrating })

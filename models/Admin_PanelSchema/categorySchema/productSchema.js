@@ -26,7 +26,7 @@ const schema=new mongoose.Schema({
         require:true
     },
     totalRating:{
-        type:Number,
+        type:String,
         default:0
     },
     ratings:[
