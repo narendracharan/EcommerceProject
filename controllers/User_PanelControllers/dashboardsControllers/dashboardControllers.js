@@ -16,11 +16,11 @@ exports.allPendingOrder = async (req, res) => {
     const pending = await orderSchema.aggregate([
       {
         $match: {
-          orderStatus: "pending",
+          orderStatus : "pending",
         },
       },
       {
-        $group: {
+        $group : {
           _id: "$orderStatus",
           total: {
             $sum: 1,

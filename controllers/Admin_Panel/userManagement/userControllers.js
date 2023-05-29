@@ -11,6 +11,7 @@ const reviewSchema = require("../../../models/User_PanelSchema/reviewSchema/revi
 
 exports.userSignup = async (req, res) => {
   const user = new userSchema(req.body);
+  console.log(user);
   const { userEmail } = req.body;
   try {
     const error =  validationResult(req);
@@ -18,6 +19,7 @@ exports.userSignup = async (req, res) => {
       return res.status(422).json({errors:error.array() });
     }
     const exit = await userSchema.findOne({ userEmail: userEmail });
+    console.log(exit);
     if (exit) {
     return  res.status(403).json({
         status: "Failed",
@@ -33,16 +35,20 @@ exports.userSignup = async (req, res) => {
       subject: "Your Signup Successfully",
       text: `This ${otp} Otp Verify To Email`,
     };
+    console.log(otp);
     transporter.sendMail(mailOptions);
     const newOtpVerify = await new userSchema({
       otp: otp,
       expiresAt: Date.now() + 300,
     });
     await newOtpVerify.save();
+    console.log(mailOptions);
     await transporter.sendMail(mailOptions);
     const createUser = await user.save();
+    console.log(createUser);
     res.status(201).json(success(res.statusCode,"Signup Successfully",{createUser}));
   } catch (err) {
+    console.log(err);
     res.status(400).json(error("Failed",res.statusCode));
   }
 };
@@ -123,9 +129,9 @@ exports.userList = async (req, res) => {
 
 exports.userLogin = async (req, res) => {
   try {
-    const { userEmail, password, status } = req.body;
+    const { userEmail, password } = req.body;
     if (userEmail && password) {
-      const login = await userSchema.findOne({ userEmail: userEmail });
+      const login = await userSchema.findOne({userEmail:userEmail})
       if (login != null) {
         const match = await bcrypt.compare(password, login.password);
         if (match) {

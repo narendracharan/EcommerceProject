@@ -136,7 +136,7 @@ exports.productDiscount = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(400).json(error("Failed", res.statusCode));
-  }
+  } 
 };
 
 exports.ratingProduct = async (req, res) => {

@@ -2,7 +2,7 @@ const productSchema = require("../../../models/Admin_PanelSchema/categorySchema/
 const coupanSchema = require("../../../models/Admin_PanelSchema/coupanSchema/coupanSchema");
 const cartsSchema = require("../../../models/User_PanelSchema/cartSchema/cartsSchema");
 const orderSchema = require("../../../models/User_PanelSchema/orderSchema/orderSchema");
-const userSchema = require("../../../models/User_PanelSchema/userSchema/userSchema");
+
 const { error, success } = require("../../response");
 
 exports.createOrder = async (req, res) => {
@@ -94,3 +94,28 @@ exports.orderList = async (req, res) => {
 //     res.status(400).json(error("Failed", res.statusCode));
 //   }
 // };
+
+exports.orderSuccessDetails= async (req, res) => {
+  try {
+    const pending = await orderSchema.aggregate([
+      {
+        $match: {
+          orderStatus: "success",
+        },
+      },
+    ]);
+    if(pending){
+      const orderList=await orderSchema.aggregate([
+        {
+          $match: {
+            orderStatus: "success",
+          },
+        },
+      ])
+      res.status(200).json(success(res.statusCode, "Success", { orderList }));
+    }
+     } catch (err) {
+    console.log(err);
+    res.status(400).json(error("Failed", res.statusCode));
+  }
+};
