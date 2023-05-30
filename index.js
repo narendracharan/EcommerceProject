@@ -20,6 +20,8 @@ const staticPath=path.join(__dirname,"./public")
 app.use("/",commonRoutes)
 app.use(express.static("./public"))
 
-app.listen(process.env.PORT, () => {
+const server= app.listen(process.env.PORT, () => {
   console.log(`Server is running port no:${process.env.PORT}"`);
 });
+
+module.exports=server

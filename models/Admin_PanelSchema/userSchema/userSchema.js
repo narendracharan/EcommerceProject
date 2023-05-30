@@ -44,7 +44,6 @@ const schema=new mongoose.Schema({
     },
     modules:{
         type:Array,
-        require:true
     },
     status:{
         type:Boolean,

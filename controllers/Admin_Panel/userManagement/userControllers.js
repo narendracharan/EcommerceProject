@@ -67,7 +67,7 @@ exports.checkStatus = async (req, res) => {
 
 exports.OtpVerify = async (req, res) => {
   try {
-    var { userEmail, otp } = req.body;
+    const { userEmail, otp } = req.body;
     if (!userEmail || !otp) {
       throw Error("Empty Otp Details Are Not Allowed");
     } else {
@@ -83,14 +83,14 @@ exports.OtpVerify = async (req, res) => {
         }
       }
     }
-  } catch (error) {
-    res.status(400).json(error("Failed",res.statusCode));
+  } catch (err) {
+    res.status(400).json(error("userEmail are incorrect",res.statusCode));
   }
 };
 
 exports.editProfile = async (req, res) => {
   try {
-    const filepath = `/${req.files.filename}`;
+    const filepath = `/${req.file.filename}`;
     const data = {
       userName: req.body.userName,
       userEmail: req.body.userEmail,
@@ -99,6 +99,7 @@ exports.editProfile = async (req, res) => {
    const profileData= await userSchema.findByIdAndUpdate(req.params.id, data, { new: true });
     res.status(200).json(success(res.statusCode,"Profile Updated",{ profileData}));
   } catch (err) {
+
     res.status(400).json(error("Failed",res.statusCode));
   }
 };
@@ -192,7 +193,7 @@ exports.sendUserResetPassword = async (req, res) => {
    return res.status(200).json(success(res.statusCode,"Success",{ useriD: user._id,
         token,}));
     } else {
-      res.status(400).json(error("Failed",res.statusCode));
+      res.status(400).json(error("userEmail are empty",res.statusCode));
     }
   } catch (err) {
     res.status(500).json(error("Failed",res.statusCode));
@@ -218,7 +219,7 @@ exports.resetPassword = async (req, res) => {
         res.status(200).json(success(res.statusCode,"Success",{createPassword}));
       }
     } else {
-      res.status(403).json(error("Failed",res.statusCode));
+      res.status(403).json(error("password and confirmPassword empty",res.statusCode));
     }
   } catch (err) {
     res.status(400).json(error("Failed",res.statusCode));
